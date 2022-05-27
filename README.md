@@ -6,16 +6,16 @@
 <h2>Основной функционал:</h2>
 <ul>
     <li>Регистрация и создание персонажа</li>
-    <img src="https://github.com/profatsky/vkbottle-game-bot/blob/master/pictures/gif/register.gif">
+    <img src="files/gif/register.gif">
     <hr>
     <li>Изменение внешности персонажа (одежда, прическа, лицо, цвет кожи)</li>
-    <img src="https://github.com/profatsky/vkbottle-game-bot/blob/master/pictures/gif/shop.gif">
+    <img src="files/gif//shop.gif">
     <hr>
     <li>Заработок монеток (покупка видеокарт, приносящих прибыль)</li>
-    <img src="https://github.com/profatsky/vkbottle-game-bot/blob/master/pictures/gif/cards.gif">
+    <img src="files/gif/cards.gif">
     <hr>
     <li>Игры (блэкджек, камень-ножницы-бумага, монетка)</li>
-    <img src="https://github.com/profatsky/vkbottle-game-bot/blob/master/pictures/gif/game.gif">
+    <img src="files/gif/game.gif">
 </ul>
 <h2>Настройка и установка</h2>
 
