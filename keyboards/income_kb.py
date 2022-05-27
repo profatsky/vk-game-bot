@@ -8,6 +8,6 @@ mining_keyboard = (
         .add(Text('📼 Купить видеокарты', payload={'mining_menu': 'buy_cards'}), color=KeyboardButtonColor.POSITIVE)
         .add(Text('📼 Продать видеокарты', payload={'mining_menu': 'sell_cards'}), color=KeyboardButtonColor.NEGATIVE)
         .row()
-        .add(Text('◀ В главное меню', payload={'main': 'menu'}))
+        .add(Text('◀ В главное меню', payload={'main_menu': 'back'}))
         .get_json()
 )
