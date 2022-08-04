@@ -24,6 +24,10 @@ $ git clone https://github.com/profatsky/vk-game-bot.git
 
 $ cd vk-game-bot
 
+$ python -m venv venv
+
+$ cd venv\Scripts\activate.bat
+
 $ python3 -m pip install -r requirements.txt
 ```
 <p>После клонирования репозитория переименуйте файл .env.example в .env и укажите необходимые значения: токен и данные для подключения к MySQL</p>
