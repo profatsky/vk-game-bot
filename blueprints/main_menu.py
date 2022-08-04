@@ -16,9 +16,8 @@ async def back_to_menu(message: Message):
 # Функция, отвечающая за демонстрацию профиля
 @bp.on.private_message(payload={'main_menu': 'profile'})
 async def profile(message: Message, text="👤 Ваш профиль", kb=main_menu_keyboard):
-    user_info = db.request(f"SELECT * FROM users WHERE vk_id = {message.from_id}")
+    user_info = await db.request(f"SELECT * FROM users WHERE vk_id = {message.from_id}")
     vk_user = (await bp.api.users.get(user_id=user_info['vk_id']))[0]
-
     photo = await PhotoMessageUploader(bp.api).upload(await create_profile(user_info, vk_user))
     await bp.api.messages.send(
         peer_id=message.from_id,
@@ -35,7 +34,7 @@ async def games(message: Message):
 
 
 # Меню магазина
-@bp.on.private_message(payload={'main_menu': 'shop'})
+@bp.on.private_message(payload={'choice': 'shop'})
 async def shop(message: Message):
     await message.answer(
         '✏ Кастомизация персонажа\n'

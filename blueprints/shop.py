@@ -18,7 +18,7 @@ bp = Blueprint()
 
 # Получение баланса
 async def check_balance(user_id: int) -> int:
-    balance = db.request(f"SELECT balance FROM users WHERE vk_id = {user_id}")['balance']
+    balance = (await db.request(f"SELECT balance FROM users WHERE vk_id = {user_id}"))['balance']
     return balance
 
 
@@ -32,7 +32,7 @@ async def customize_menu(message: Message):
 
 
 async def show_customize_page(message: Message, kb, attribute: str, prices: tuple, nums: tuple = (1, 2, 3)):
-    attributes = db.request(f"SELECT skin, face, haircut, clothes FROM users WHERE vk_id = {message.from_id}")
+    attributes = await db.request(f"SELECT skin, face, haircut, clothes FROM users WHERE vk_id = {message.from_id}")
     img = await create_shop_page(
         user_attributes=attributes,
         attribute_type=attribute,
@@ -51,8 +51,8 @@ async def show_customize_page(message: Message, kb, attribute: str, prices: tupl
 # Приобретение предмета и списание средств
 async def purchase(message: Message, attribute_type: str, attribute_value: Union[int, str], price: int):
     if await check_balance(message.from_id) > price:
-        db.request(f'UPDATE users SET {attribute_type} = "{attribute_value}", balance = balance - {price} '
-                   f'WHERE vk_id = {message.from_id}')
+        await db.request(f'UPDATE users SET {attribute_type} = "{attribute_value}", balance = balance - {price} '
+                         f'WHERE vk_id = {message.from_id}')
         await message.answer("🥳 Поздравляем с покупкой!")
         await bp.state_dispenser.delete(message.peer_id)
         await profile(message, kb=shop_menu_keyboard)
@@ -78,7 +78,7 @@ async def show_skin_page_1(message: Message):
 async def select_skin_page_1(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_skin = db.request(f"SELECT skin FROM users WHERE vk_id = {message.from_id}")["skin"]
+        exist_skin = (await db.request(f"SELECT skin FROM users WHERE vk_id = {message.from_id}"))['skin']
         if choice == "shop":
             await customize_menu(message)
         elif choice in (1, 2, 3) and choice != exist_skin:
@@ -114,7 +114,7 @@ async def show_face_page_1(message: Message):
 async def select_face_page_1(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_face = db.request(f"SELECT face FROM users WHERE vk_id = {message.from_id}")["face"]
+        exist_face = (await db.request(f"SELECT face FROM users WHERE vk_id = {message.from_id}"))["face"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -153,7 +153,7 @@ async def show_face_page_2(message: Message):
 async def select_face_page_2(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_face = db.request(f"SELECT face FROM users WHERE vk_id = {message.from_id}")["face"]
+        exist_face = (await db.request(f"SELECT face FROM users WHERE vk_id = {message.from_id}"))["face"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -192,7 +192,7 @@ async def show_haircut_page_1(message: Message):
 async def select_haircut_page_1(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_haircut = db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}")["haircut"]
+        exist_haircut = (await db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}"))["haircut"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -237,7 +237,7 @@ async def show_haircut_page_2(message: Message):
 async def select_haircut_page_2(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_haircut = db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}")["haircut"]
+        exist_haircut = (await db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}"))["haircut"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -279,7 +279,7 @@ async def show_haircut_page_3(message: Message):
 async def select_haircut_page_3(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_haircut = db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}")["haircut"]
+        exist_haircut = (await db.request(f"SELECT haircut FROM users WHERE vk_id = {message.from_id}"))["haircut"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -318,7 +318,7 @@ async def show_clothes_page_1(message: Message):
 async def select_clothes_page_1(message: Message):
     if message.payload:
         choice = json.loads(message.payload)["choice"]
-        exist_clothes = db.request(f"SELECT clothes FROM users WHERE vk_id = {message.from_id}")["clothes"]
+        exist_clothes = (await db.request(f"SELECT clothes FROM users WHERE vk_id = {message.from_id}"))["clothes"]
         if choice == "shop":
             await bp.state_dispenser.delete(message.peer_id)
             await customize_menu(message)
@@ -355,12 +355,12 @@ async def mining_shop(message: Message):
 
 # Добавление/изменение данных пользователя в таблицах при покупке видеокарты
 async def add_mining(vk_id, video_card):
-    if not db.request(f"SELECT * FROM mining JOIN users USING (user_id) WHERE vk_id = {vk_id}", "result"):
-        db.request(f'INSERT INTO mining (user_id, {video_card}) '
-                   f'VALUES ((SELECT user_id FROM users WHERE vk_id = {vk_id}), "{datetime.datetime.now()}")')
+    if not await db.request(f"SELECT * FROM mining JOIN users USING (user_id) WHERE vk_id = {vk_id}", "result"):
+        await db.request(f'INSERT INTO mining (user_id, {video_card}) '
+                         f'VALUES ((SELECT user_id FROM users WHERE vk_id = {vk_id}), "{datetime.datetime.now()}")')
     else:
-        db.request(f'UPDATE mining SET {video_card} = "{datetime.datetime.now()}" '
-                   f'WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})')
+        await db.request(f'UPDATE mining SET {video_card} = "{datetime.datetime.now()}" '
+                         f'WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})')
 
 
 # Ответ на выбор пользователя при покупке видеокарты
@@ -372,7 +372,7 @@ async def buy_card(message: Message):
             await bp.state_dispenser.delete(message.peer_id)
             await shop(message)
         else:
-            slots = db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
+            slots = await db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
             # Проверяем, есть ли свободный слот у пользователя
             if "no_card" not in (slots["slot_1"], slots["slot_2"], slots["slot_3"]):
                 await bp.state_dispenser.delete(message.peer_id)

@@ -15,7 +15,7 @@ bp = Blueprint()
 # Запуск бота (регистрация и создание персонажа)
 @bp.on.private_message(text=["Начать"])
 async def start(message: Message):
-    if not db.request(f"SELECT * FROM users WHERE vk_id = '{message.from_id}'", "result"):
+    if not await db.request(f"SELECT * FROM users WHERE vk_id = '{message.from_id}'", "result"):
         photo = await PhotoMessageUploader(bp.api).upload('files/images/start.png')
 
         await bp.api.messages.send(
@@ -91,7 +91,7 @@ async def choose_nickname(message: Message, nickname=None):
     if len(nickname) > 16:
         await message.answer('❗ Имя не должно превышать 16 символов')
     else:
-        db.request(
+        await db.request(
             'INSERT INTO users (vk_id, skin, face, haircut, nickname) '
             f'VALUES ({message.from_id}, {ctx.get("skin")}, {ctx.get("face")}, {ctx.get("haircut")}, "{nickname}")'
         )

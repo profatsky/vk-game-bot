@@ -16,8 +16,8 @@ bp = Blueprint()
 # Демонстрация видеокарт пользователя
 @bp.on.private_message(payload={'income_menu': 'mining'})
 async def mining_menu(message: Message):
-    if db.request(f"SELECT * FROM mining WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})",
-                  "result"):
+    if await db.request(f"SELECT * FROM mining "
+                        f"WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})", "result"):
         await profile(
             message=message,
             text='📼 Ваши видеокарты',
@@ -30,7 +30,7 @@ async def mining_menu(message: Message):
 
 # Получени прибыли от видеокарты
 async def get_card_income(message: Message, video_card: str, cards_amount: int):
-    start_mining_date = db.request(
+    start_mining_date = await db.request(
         f"SELECT low_card, medium_card, high_card FROM mining "
         f"WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})")[video_card]
 
@@ -46,8 +46,8 @@ async def get_card_income(message: Message, video_card: str, cards_amount: int):
         remaining_minutes = (mining_time - timedelta(hours=number_of_hours)) / timedelta(minutes=1)
         # Уменьшаем время начала работы видеокарты
         start_time = datetime.now() - timedelta(minutes=remaining_minutes)
-        db.request(f'UPDATE mining SET {video_card} = "{start_time}" '
-                   f'WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})')
+        await db.request(f'UPDATE mining SET {video_card} = "{start_time}" '
+                         f'WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})')
         await message.answer(
             f"Доход от ведеокарт(ы) «{video_card.split('_')[0].capitalize()}» составил ${income_from_the_card}"
         )
@@ -59,7 +59,7 @@ async def get_card_income(message: Message, video_card: str, cards_amount: int):
 # Получение прибыли
 @bp.on.private_message(payload={'mining_menu': 'get_income'})
 async def get_mining_income(message: Message):
-    slots = db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
+    slots = await db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
     no_cards_amount = sum(map(lambda card: card == "no_card", slots.values()))
     general_income = 0
     if no_cards_amount != 3:
@@ -93,7 +93,7 @@ async def get_mining_income(message: Message):
             )
             general_income += income_from_high
 
-        db.request(f"UPDATE users SET balance = balance + {general_income} WHERE vk_id = {message.from_id}")
+        await db.request(f"UPDATE users SET balance = balance + {general_income} WHERE vk_id = {message.from_id}")
         await message.answer(f"Общий доход от видеокарт составил ${general_income}")
     else:
         await message.answer("❗ У вас нет видеокарт. Вы можете купить их в магазине 🏬")
@@ -103,7 +103,7 @@ async def get_mining_income(message: Message):
 # Продажа видеокарты
 @bp.on.private_message(payload={'mining_menu': 'sell_cards'})
 async def sell_video_card_menu(message: Message):
-    slots = db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
+    slots = await db.request(f"SELECT slot_1, slot_2, slot_3 FROM users WHERE vk_id = {message.from_id}")
     cards_list = {"low_card": 750, "medium_card": 3750, "high_card": 12500}  # стоимость продажи каждой из видеокарт
 
     # Получение списка видеокарт доступных для продажи
@@ -138,7 +138,7 @@ async def sell_video_card(message: Message):
             await mining_menu(message)
         else:
             slot, card_name, money = answer
-            db.request(
+            await db.request(
                 f'UPDATE users JOIN mining USING (user_id) '
                 f'SET balance = balance + {money}, users.{slot} = "no_card", mining.{card_name} = NULL '
                 f'WHERE vk_id = {message.from_id}'

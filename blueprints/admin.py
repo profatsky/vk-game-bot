@@ -7,13 +7,13 @@ bp = Blueprint()
 
 # Проверка на принадлежность к касте администраторов
 async def is_admin(vk_id: int) -> int:
-    return db.request(
+    return await db.request(
         f"SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})")['lvl']
 
 
 # Проверка, зарегистрирован ли пользователь
 async def is_registered(vk_id: int) -> int:
-    return db.request(
+    return await db.request(
         request=f"SELECT * FROM users WHERE vk_id = {vk_id}",
         types="result"
     )
@@ -21,7 +21,7 @@ async def is_registered(vk_id: int) -> int:
 
 # Узнать, занимает ли пользователь какую-либо должность
 async def check_status(vk_id: int) -> str:
-    lvl = db.request(f"SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})")
+    lvl = await db.request(f"SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})")
     statuses = {1: "Хелпер", 2: "Модератор", 3: "Администратор", 4: "Разработчик", 5: "Основатель"}
     if lvl:
         return statuses[lvl["lvl"]]
@@ -32,7 +32,7 @@ async def check_status(vk_id: int) -> str:
 # Проверка на наличие обращений в техподдержку
 @bp.on.private_message(text="/reports")
 async def check_reports(event: Message):
-    reports = db.request(
+    reports = await db.request(
         request="SELECT vk_id, message FROM reports JOIN users USING (user_id) WHERE is_answered = 0",
         types="fetchmany",
         size=3
@@ -55,7 +55,7 @@ async def answer(message: Message, vk_id=None, text=None):
     if await is_admin(message.from_id):
         if vk_id and text:
             vk_id = int(vk_id)
-            report_info = db.request(
+            report_info = await db.request(
                     request=f"SELECT * FROM reports WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id}) "
                             f"and is_answered = 0"
             )
@@ -67,7 +67,7 @@ async def answer(message: Message, vk_id=None, text=None):
                             f'✉Ответ: {text}',
                     random_id=0
                 )
-                db.request(f"UPDATE reports SET is_answered = 1 WHERE vk_id = {vk_id} and is_answered = 0")
+                await db.request(f"UPDATE reports SET is_answered = 1 WHERE vk_id = {vk_id} and is_answered = 0")
             else:
                 await message.answer(f'❗ Нет обращений от указанного пользователя')
         else:
@@ -81,7 +81,7 @@ async def make_admin(message: Message, vk_id=None, lvl=None):
     if await is_admin(message.from_id):  # проверка, администратор ли отправил команду
         vk_id, lvl = int(vk_id), int(lvl)
         if await is_registered(vk_id):  # есть ли назначаемый пользователь в базе
-            admin_lvl = db.request(
+            admin_lvl = await db.request(
                 f"SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})"
             )['lvl']
             if admin_lvl < 3 or admin_lvl <= lvl:
@@ -96,7 +96,7 @@ async def make_admin(message: Message, vk_id=None, lvl=None):
                 candidate_lvl = await is_admin(vk_id)  # уровень администратора указанного пользователя
                 if candidate_lvl:  # если указанный пользователь имеет права администратора
                     # Изменение уровня админ прав у указанного пользователя
-                    db.request(
+                    await db.request(
                         f"UPDATE admins SET lvl = {lvl} "
                         f"WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})"
                     )
@@ -131,7 +131,7 @@ async def make_admin(message: Message, vk_id=None, lvl=None):
                     else:
                         await message.answer(f"❗ Указанный пользователь и так имеет {lvl} уровень администратора")
                 else:  # если указанный пользователь не имеет прав администратора
-                    db.request(
+                    await db.request(
                         f"INSERT INTO admins (user_id, lvl) "
                         f"VALUES ((SELECT user_id FROM users WHERE vk_id = {vk_id}), {lvl})"
                     )

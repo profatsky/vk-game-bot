@@ -8,7 +8,7 @@ main_menu_keyboard = (
         .row()
         .add(Text('🎮 Игры', payload={'main_menu': 'games'}), color=KeyboardButtonColor.PRIMARY)
         .add(Text('⛏ Заработок', payload={'main_menu': 'income'}), color=KeyboardButtonColor.PRIMARY)
-        .add(Text('🏬 Магазин', payload={'main_menu': 'shop'}), color=KeyboardButtonColor.PRIMARY)
+        .add(Text('🏬 Магазин', payload={'choice': 'shop'}), color=KeyboardButtonColor.PRIMARY)
         .get_json()
 )
 

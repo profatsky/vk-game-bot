@@ -24,7 +24,7 @@ async def send_report(message: Message, report=None):
         await message.answer(f'Главное меню', keyboard=menu_kb.main_menu_keyboard)
     else:
         # Проверка, есть ли уже отправленное обращение без ответа от этого пользователя
-        if not db.request(
+        if not await db.request(
                 request=f"SELECT * FROM reports WHERE "
                         f"user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id}) and is_answered = '0'",
                 types='result'
@@ -32,13 +32,13 @@ async def send_report(message: Message, report=None):
             if len(report) > 256:
                 await message.answer(f"❗ Длина вашего вопроса не должна превышать 256 символов")
             else:
-                db.request(
+                await db.request(
                     f"INSERT INTO reports (user_id, message) VALUES "
                     f"((SELECT user_id FROM users WHERE vk_id = {message.from_id}), '{report}')"
                 )
 
                 user = (await bp.api.users.get(user_id=message.from_id))[0]
-                admins = db.request(f"SELECT vk_id FROM admins JOIN users USING (user_id)", 'fetchall')
+                admins = await db.request(f"SELECT vk_id FROM admins JOIN users USING (user_id)", 'fetchall')
 
                 # Рассылка уведомления всем администраторам
                 for admin in admins:

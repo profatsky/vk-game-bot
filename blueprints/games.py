@@ -43,7 +43,7 @@ async def bet_blackjack(message: Message, answer=None):
             else:
                 # Списание средств и начало игры
                 ctx.set("bet", answer)
-                db.request(f"UPDATE users SET balance = balance - {answer} WHERE vk_id = {message.from_id}")
+                await db.request(f"UPDATE users SET balance = balance - {answer} WHERE vk_id = {message.from_id}")
                 await message.answer(f'Ваша ставка: {answer} 💵')
                 await blackjack(message)
         else:
@@ -121,7 +121,7 @@ async def blackjack(message: Message):
     )
 
     if player_score >= 21:
-        db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
+        await db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
         ctx.storage.clear()
         await bp.state_dispenser.delete(message.peer_id)
         await message.answer(
@@ -164,7 +164,7 @@ async def take_more(message: Message):
     )
 
     if player_score == 21:
-        db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
+        await db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
         ctx.storage.clear()
         await bp.state_dispenser.delete(message.peer_id)
         await message.answer(
@@ -211,14 +211,14 @@ async def stop_blackjack(message: Message):
 
     # Подведение итогов игры
     if dealer_score > 21 or player_score > dealer_score:
-        db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
+        await db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} * 2 WHERE vk_id = {message.from_id}")
         await bp.state_dispenser.delete(message.peer_id)
         await message.answer(
             '🙆‍♂️Поздравляю! Победа!\nВозвращаю вас к списку игр',
             keyboard=games_menu_keyboard
         )
     elif dealer_score == player_score:
-        db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} WHERE vk_id = {message.from_id}")
+        await db.request(f"UPDATE users SET balance = balance + {ctx.get('bet')} WHERE vk_id = {message.from_id}")
         await bp.state_dispenser.delete(message.peer_id)
         await message.answer(
             '💁‍♂️Пуш! Ничья\nВозвращаю вас к списку игр',

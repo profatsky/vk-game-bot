@@ -1,9 +1,9 @@
 from loader import db
 
 
-def create_tables():
+async def create_tables():
     # Создание таблицы пользователей
-    db.request(
+    await db.request(
         "CREATE TABLE IF NOT EXISTS users ("
             "user_id int PRIMARY KEY AUTO_INCREMENT,"
             "vk_id int NOT NULL,"
@@ -19,7 +19,7 @@ def create_tables():
         ");"
     )
     # Создание таблицы репортов
-    db.request(
+    await db.request(
         "CREATE TABLE IF NOT EXISTS reports ("
             "report_id int PRIMARY KEY AUTO_INCREMENT,"
             "user_id int NOT NULL,"
@@ -29,7 +29,7 @@ def create_tables():
         ");"
     )
     # Создание таблицы майнинга
-    db.request(
+    await db.request(
         "CREATE TABLE IF NOT EXISTS mining ("
             "mining_id int PRIMARY KEY AUTO_INCREMENT,"
             "user_id int NOT NULL,"
@@ -40,7 +40,7 @@ def create_tables():
         ");"
     )
     # Создание таблицы админов
-    db.request(
+    await db.request(
         "CREATE TABLE IF NOT EXISTS admins ("
             "admin_id int PRIMARY KEY AUTO_INCREMENT,"
             "user_id int NOT NULL,"
