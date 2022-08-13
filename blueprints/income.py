@@ -30,9 +30,9 @@ async def mining_menu(message: Message):
 
 # Получени прибыли от видеокарты
 async def get_card_income(message: Message, video_card: str, cards_amount: int):
-    start_mining_date = await db.request(
+    start_mining_date = (await db.request(
         f"SELECT low_card, medium_card, high_card FROM mining "
-        f"WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})")[video_card]
+        f"WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {message.from_id})"))[video_card]
 
     # Узнаем сколько времени карта майнила
     mining_time = datetime.now() - start_mining_date

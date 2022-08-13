@@ -15,7 +15,7 @@ bp = Blueprint()
 # Запуск бота (регистрация и создание персонажа)
 @bp.on.private_message(text=["Начать"])
 async def start(message: Message):
-    if not await db.request(f"SELECT * FROM users WHERE vk_id = '{message.from_id}'", "result"):
+    if not (await db.request(f"SELECT * FROM users WHERE vk_id = '{message.from_id}'", "result")):
         photo = await PhotoMessageUploader(bp.api).upload('files/images/start.png')
 
         await bp.api.messages.send(
