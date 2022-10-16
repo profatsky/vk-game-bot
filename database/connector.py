@@ -27,17 +27,18 @@ class DataBase:
                     await conn.commit()
                     if types == 'fetchone':
                         data = await cur.fetchone()
+                        if data:
+                            return dict(zip(tuple(map(lambda x: x[0], cur.description)), data))
                     elif types == 'fetchall':
                         data = await cur.fetchall()
+                        return tuple(dict(zip(tuple(map(lambda x: x[0], cur.description)), item)) for item in data)
                     elif types == 'result':
                         return result
                     elif types == 'fetchmany':
                         data = await cur.fetchmany(size)
+                        return tuple(dict(zip(tuple(map(lambda x: x[0], cur.description)), item)) for item in data)
                     else:
                         raise DataBaseError(f"{type} not found")
-                    if data:
-                        return dict(zip(tuple(map(lambda x: x[0], cur.description)), data))
-
         except aiomysql.OperationalError as e:
             if e.args[0] == 2003:
                 raise DataBaseError(f"Ошибка подключения к Базе Данных")

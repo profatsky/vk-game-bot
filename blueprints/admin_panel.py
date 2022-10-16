@@ -1,6 +1,7 @@
 from vkbottle.bot import Blueprint, Message
 
 from loader import db
+from keyboards.admin_kb import admin_panel
 
 bp = Blueprint()
 
@@ -8,7 +9,7 @@ bp = Blueprint()
 # Проверка на принадлежность к касте администраторов
 async def is_admin(vk_id: int) -> int:
     return await db.request(
-        f"SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})")['lvl']
+        f'SELECT lvl FROM admins WHERE user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id})', 'result')
 
 
 # Проверка, зарегистрирован ли пользователь
@@ -29,28 +30,37 @@ async def check_status(vk_id: int) -> str:
         return 'Пользователь'
 
 
+@bp.on.private_message(payload={'admin': 'panel'})
+async def open_admin_panel(event: Message):
+    await event.answer('🤖 Открываю админ-панель', keyboard=admin_panel)
+
+
+@bp.on.private_message(text=['/reports', '/report'])
+async def check_reports_via_command(message: Message):
+    await check_reports(message)
+
+
 # Проверка на наличие обращений в техподдержку
-@bp.on.private_message(text="/reports")
-async def check_reports(event: Message):
+@bp.on.private_message(payload={'admin': 'reports'})
+async def check_reports(message: Message):
     reports = await db.request(
         request="SELECT vk_id, message FROM reports JOIN users USING (user_id) WHERE is_answered = 0",
         types="fetchmany",
         size=3
     )
     if reports:
-        # Формирование и демонастрация 3 обращений
         text = "📒 Список обращений\n\n"
         for count, report in enumerate(reports, start=1):
             user = (await bp.api.users.get(user_id=report['vk_id']))[0]
             text += f"{count}. Сообщение от пользователя [id{user.id}|{user.first_name} {user.last_name}]:\n" \
                     f"✉ {report['message']}\n❗ Для ответа - /answer {user.id}\n\n"
-        await event.answer(f'{text}')
+        await message.answer(f'{text}')
     else:
-        await event.answer(f'❗ Обращений нет')
+        await message.answer(f'📪 На данный момент обращений нет')
 
 
 # Ответить на обращение пользователя
-@bp.on.private_message(text='/answer <vk_id> <text>')
+@bp.on.private_message(text=['/answer <vk_id> <text>', '/answer <vk_id>', '/answer'])
 async def answer(message: Message, vk_id=None, text=None):
     if await is_admin(message.from_id):
         if vk_id and text:
@@ -67,13 +77,12 @@ async def answer(message: Message, vk_id=None, text=None):
                             f'✉Ответ: {text}',
                     random_id=0
                 )
-                await db.request(f"UPDATE reports SET is_answered = 1 WHERE vk_id = {vk_id} and is_answered = 0")
+                await db.request(f"UPDATE reports SET is_answered = 1 WHERE "
+                                 f"user_id = (SELECT user_id FROM users WHERE vk_id = {vk_id}) and is_answered = 0")
             else:
                 await message.answer(f'❗ Нет обращений от указанного пользователя')
         else:
             await message.answer(f'❗ Используйте - /answer <id> <сообщение>')
-    else:
-        await message.answer(f"❗ У вас недостаточно прав")
 
 
 @bp.on.private_message(text="/makeadmin <vk_id> <lvl>")
