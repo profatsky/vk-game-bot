@@ -1,12 +1,15 @@
 import json
+from copy import deepcopy
 
 from vkbottle.bot import Blueprint, Message
 from vkbottle import PhotoMessageUploader
+from vkbottle.tools import Text
 
 from loader import db, ctx
 from keyboards import menu_kb
 from image_app import create_face, create_haircut
-from blueprints.main_menu import profile
+from .main_menu import profile
+from .admin_panel import is_admin
 import states
 
 bp = Blueprint()
@@ -27,7 +30,11 @@ async def start(message: Message):
 
         await bp.state_dispenser.set(message.peer_id, states.RegisterState.SKIN)
     else:
-        await message.answer("Я вас не понимаю 🤨", keyboard=menu_kb.main_menu_keyboard)
+        kb = deepcopy(menu_kb.main_menu_keyboard)
+        if is_admin(message.from_id):
+            kb.row()
+            kb.add(Text('🎨 Админ-панель', payload={'admin': 'panel'}))
+        await message.answer("Я вас не понимаю 🤨", keyboard=kb)
 
 
 # Выбор цвета кожи при создании персонажа

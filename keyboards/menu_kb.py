@@ -9,7 +9,6 @@ main_menu_keyboard = (
         .add(Text('🎮 Игры', payload={'main_menu': 'games'}), color=KeyboardButtonColor.PRIMARY)
         .add(Text('⛏ Заработок', payload={'main_menu': 'income'}), color=KeyboardButtonColor.PRIMARY)
         .add(Text('🏬 Магазин', payload={'choice': 'shop'}), color=KeyboardButtonColor.PRIMARY)
-        .get_json()
 )
 
 shop_menu_keyboard = (

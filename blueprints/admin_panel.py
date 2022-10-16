@@ -1,7 +1,7 @@
 from vkbottle.bot import Blueprint, Message
 
 from loader import db
-from keyboards.admin_kb import admin_panel
+from keyboards.admin_kb import admin_keyboard
 
 bp = Blueprint()
 
@@ -32,7 +32,7 @@ async def check_status(vk_id: int) -> str:
 
 @bp.on.private_message(payload={'admin': 'panel'})
 async def open_admin_panel(event: Message):
-    await event.answer('🤖 Открываю админ-панель', keyboard=admin_panel)
+    await event.answer('🤖 Открываю админ-панель', keyboard=admin_keyboard)
 
 
 @bp.on.private_message(text=['/reports', '/report'])

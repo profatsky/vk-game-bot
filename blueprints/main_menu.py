@@ -1,9 +1,15 @@
+from copy import deepcopy
+
 from vkbottle import PhotoMessageUploader
 from vkbottle.bot import Blueprint, Message
 
 from loader import db
 from keyboards.menu_kb import main_menu_keyboard, games_menu_keyboard,  income_menu_keyboard, shop_menu_keyboard
+from .admin_panel import is_admin
 from image_app import create_profile
+
+from vkbottle.tools import Keyboard, KeyboardButtonColor, Text
+
 
 bp = Blueprint()
 
@@ -18,6 +24,10 @@ async def back_to_menu(message: Message):
 async def profile(message: Message, text="👤 Ваш профиль", kb=main_menu_keyboard):
     user_info = await db.request(f"SELECT * FROM users WHERE vk_id = {message.from_id}")
     vk_user = (await bp.api.users.get(user_id=user_info['vk_id']))[0]
+    if await is_admin(user_info['vk_id']) and kb == main_menu_keyboard:
+        kb = deepcopy(main_menu_keyboard)
+        kb.row()
+        kb.add(Text('🎨 Админ-панель', payload={'admin': 'panel'})).get_json()
     photo = await PhotoMessageUploader(bp.api).upload(await create_profile(user_info, vk_user))
     await bp.api.messages.send(
         peer_id=message.from_id,

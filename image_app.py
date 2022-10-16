@@ -2,7 +2,7 @@ from io import BytesIO
 
 from PIL import Image, ImageFont, ImageDraw
 
-from blueprints.admin import check_status
+from blueprints.admin_panel import check_status
 
 
 # Преобразование изображения с типом Image в изображение с типом BytesIO
