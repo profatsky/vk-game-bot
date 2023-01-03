@@ -3,12 +3,12 @@ from copy import deepcopy
 from vkbottle import PhotoMessageUploader
 from vkbottle.bot import Blueprint, Message
 
-from loader import db
-from keyboards.menu_kb import main_menu_keyboard, games_menu_keyboard,  income_menu_keyboard, shop_menu_keyboard
+from app.loader import db
+from app.keyboards import main_menu_keyboard, games_menu_keyboard,  income_menu_keyboard, shop_menu_keyboard
 from .admin_panel import is_admin
-from image_app import create_profile
+from app.image_app import create_profile
 
-from vkbottle.tools import Keyboard, KeyboardButtonColor, Text
+from vkbottle.tools import Text
 
 
 bp = Blueprint()

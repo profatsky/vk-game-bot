@@ -16,7 +16,7 @@ async def get_img_to_send(img: Image, file_name: str = 'img') -> BytesIO:
 
 # Создание персонажа
 async def create_character(skin: int, face: int = None, haircut: int = None, clothes: int = None) -> Image:
-    shape_img = Image.open("files/images/contour.png")  # изображение с контуром персонажа
+    shape_img = Image.open("assets/img/contour.png")  # изображение с контуром персонажа
     skin_img = Image.open(f"files/images/skin/skin{skin}.png")  # изображние тела
     skin_img.paste(shape_img, (0, 0), shape_img)
     if face is not None:

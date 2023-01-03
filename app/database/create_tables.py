@@ -1,4 +1,4 @@
-from loader import db
+from app.loader import db
 
 
 async def create_tables():

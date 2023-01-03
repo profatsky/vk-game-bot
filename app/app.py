@@ -1,12 +1,8 @@
-import asyncio
-import warnings
-
 from vkbottle.bot import Message
 
 from loader import bot
 from blueprints import bps
 from blueprints.register import start
-from database.create_tables import create_tables
 
 for bp in bps:
     bp.load(bot)
@@ -17,10 +13,8 @@ async def no_understand(message: Message):
     await start(message)
 
 
-warnings.filterwarnings("ignore", category=Warning)
-loop = asyncio.get_event_loop()
+# warnings.filterwarnings("ignore", category=Warning)
 
-if __name__ == "__main__":
+def setup_app():
     print("Бот запущен!")
-    loop.run_until_complete(create_tables())
     bot.run_forever()

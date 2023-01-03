@@ -3,11 +3,11 @@ import random
 
 from vkbottle.bot import Blueprint, Message
 
-from loader import db, ctx
-from blueprints.shop import check_balance
-from keyboards import games_kb
-from keyboards.menu_kb import games_menu_keyboard
-from states import BlackJack, Tsuefa, CoinFlip
+from app.loader import db, ctx
+from app.blueprints.shop import check_balance
+from app.keyboards import games_kb
+from app.keyboards import games_menu_keyboard
+from app.states import BlackJack, Tsuefa, CoinFlip
 
 bp = Blueprint()
 

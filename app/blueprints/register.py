@@ -5,12 +5,12 @@ from vkbottle.bot import Blueprint, Message
 from vkbottle import PhotoMessageUploader
 from vkbottle.tools import Text
 
-from loader import db, ctx
-from keyboards import menu_kb
-from image_app import create_face, create_haircut
+from app.loader import db, ctx
+from app.keyboards import menu_kb
+from app.image_app import create_face, create_haircut
 from .main_menu import profile
 from .admin_panel import is_admin
-import states
+from app import states
 
 bp = Blueprint()
 

@@ -4,11 +4,11 @@ from datetime import datetime, timedelta
 from vkbottle.bot import Blueprint, Message
 from vkbottle.tools import Keyboard, Text
 
-from loader import db
-from blueprints.main_menu import profile
-from blueprints.shop import mining_shop
-from keyboards import income_kb
-from states import SellCard
+from app.loader import db
+from app.blueprints.main_menu import profile
+from app.blueprints.shop import mining_shop
+from app.keyboards import income_kb
+from app.states import SellCard
 
 bp = Blueprint()
 

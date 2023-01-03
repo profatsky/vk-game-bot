@@ -3,10 +3,10 @@ from copy import deepcopy
 from vkbottle.bot import Blueprint, Message
 from vkbottle.tools import Text
 
-from loader import db
-from keyboards import menu_kb
-from states import Support
-from blueprints.admin_panel import is_admin
+from app.loader import db
+from app.keyboards import menu_kb
+from app.states import Support
+from app.blueprints.admin_panel import is_admin
 
 bp = Blueprint()
 

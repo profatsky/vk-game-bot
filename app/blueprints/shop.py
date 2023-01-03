@@ -5,13 +5,13 @@ from typing import Union
 from vkbottle import PhotoMessageUploader
 from vkbottle.bot import Blueprint, Message
 
-from loader import db
-from keyboards import shop_kb
-from keyboards.menu_kb import shop_menu_keyboard
-from keyboards.income_kb import mining_keyboard
-from image_app import create_shop_page
-from blueprints.main_menu import profile, shop
-import states
+from app.loader import db
+from app.keyboards import shop_kb
+from app.keyboards import shop_menu_keyboard
+from app.keyboards.income_kb import mining_keyboard
+from app.image_app import create_shop_page
+from app.blueprints.main_menu import profile, shop
+from app import states
 
 bp = Blueprint()
 
