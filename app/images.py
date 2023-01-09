@@ -6,41 +6,6 @@ from PIL import Image, ImageDraw, ImageFont
 from database.models_representations import Character
 
 
-async def convert_image_to_bytes_io(img: Image, image_path: str) -> BytesIO:
-    bio = BytesIO()
-    bio.name = image_path
-    img.save(bio, 'png')
-    bio.seek(0)
-    return bio
-
-
-def open_image(image_path: str):
-    return Image.open(f'assets/img/{image_path}')
-
-
-def create_character_image(
-        skin_image_path: str,
-        face_image_path: Optional[str] = None,
-        haircut_image_path: Optional[str] = None,
-        clothes_image_path: Optional[str] = None
-) -> Image:
-    contour_image = open_image('contour.png')
-    skin_image = open_image(skin_image_path)
-    skin_image.paste(contour_image, (0, 0), contour_image)
-    if face_image_path:
-        face_image = open_image(face_image_path)
-        skin_image.paste(face_image, (0, 0), face_image)
-    if haircut_image_path:
-        haircut_image = open_image(haircut_image_path)
-        skin_image.paste(haircut_image, (0, 0), haircut_image)
-    if clothes_image_path:
-        clothes_image = open_image(clothes_image_path)
-        skin_image.paste(clothes_image, (0, 0), clothes_image)
-
-    skin_image.resize((181, 181), Image.ANTIALIAS)
-    return skin_image
-
-
 def create_choice_image(characters: list[Character], choice_numbers: list[int]) -> Image:
     if 1 < len(characters) < 3:
         raise ValueError('На одном изображении может находиться не менее 1 и не более 3 персонажей')
@@ -48,7 +13,7 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
         raise ValueError('Количество номеров для выбора должно быть равно количеству персонажей на изображении')
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype("files/Fifaks10DEV1.ttf", size=50)
+    font = ImageFont.truetype("app/assets/fonts/Fifaks10DEV1.ttf", size=50)
 
     x_coordinate = 0
     for index, character in enumerate(characters):
@@ -71,17 +36,52 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
             character_image
         )
         draw_context.rectangle(
-            (66 + x_coordinate, 18, 116 + x_coordinate, 68),
+            (66 + x_coordinate, 43, 116 + x_coordinate, 93),
             fill='white',
             outline='black',
             width=3
 
         )
         draw_context.text(
-            (81 + x_coordinate, 20),
-            choice_numbers[index],
+            (81 + x_coordinate, 45),
+            str(choice_numbers[index]),
             font=font,
             fill='black'
         )
         x_coordinate += 208
     return background_image
+
+
+def create_character_image(
+        skin_image_path: str,
+        face_image_path: Optional[str] = None,
+        haircut_image_path: Optional[str] = None,
+        clothes_image_path: Optional[str] = None
+) -> Image:
+    contour_image = open_image('contour.png')
+    skin_image = open_image(skin_image_path)
+    skin_image.paste(contour_image, (0, 0), contour_image)
+    if face_image_path:
+        face_image = open_image(face_image_path)
+        skin_image.paste(face_image, (0, 0), face_image)
+    if haircut_image_path:
+        haircut_image = open_image(haircut_image_path)
+        skin_image.paste(haircut_image, (0, 0), haircut_image)
+    if clothes_image_path:
+        clothes_image = open_image(clothes_image_path)
+        skin_image.paste(clothes_image, (0, 0), clothes_image)
+
+    skin_image = skin_image.resize((181, 181), Image.ANTIALIAS)
+    return skin_image
+
+
+def open_image(image_path: str):
+    return Image.open(f'app/assets/img/{image_path}')
+
+
+def convert_image_to_bytes_io(img: Image, image_path: str = 'img') -> BytesIO:
+    bio = BytesIO()
+    bio.name = image_path
+    img.save(bio, 'png')
+    bio.seek(0)
+    return bio
