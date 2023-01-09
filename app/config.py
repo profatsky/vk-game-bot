@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from vkbottle import CtxStorage
+from vkbottle import Bot
 from vkbottle.framework.labeler import BotLabeler
 
 load_dotenv()
@@ -13,7 +13,10 @@ DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 labeler = BotLabeler()
-ctx = CtxStorage()
+bot = Bot(
+    token=TOKEN,
+    labeler=labeler
+)
 
 DATABASE_CONFIG = {
     'connections': {

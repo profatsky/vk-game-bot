@@ -1,14 +1,9 @@
 from loguru import logger
 from tortoise import Tortoise
-from vkbottle import Bot
 
-from config import TOKEN, labeler, DB_USER, DB_HOST, DB_NAME, DB_PASSWORD
+from config import DB_USER, DB_HOST, DB_NAME, DB_PASSWORD, bot
 from handlers import labelers
 
-bot = Bot(
-    token=TOKEN,
-    labeler=labeler
-)
 
 for custom_labeler in labelers:
     bot.labeler.load(custom_labeler)
