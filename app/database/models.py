@@ -1,6 +1,8 @@
 from tortoise.models import Model
 from tortoise import fields
 
+from database.models_representations import AppearanceItem
+
 
 class User(Model):
     vk_id = fields.IntField()
@@ -9,10 +11,10 @@ class User(Model):
     skin = fields.ForeignKeyField('models.Skin')
     face = fields.ForeignKeyField('models.Face')
     haircut = fields.ForeignKeyField('models.Haircut')
-    clothes = fields.ForeignKeyField('models.Clothes')
-    gpu_1 = fields.ForeignKeyField('models.GraphicsCard', related_name=False)
-    gpu_2 = fields.ForeignKeyField('models.GraphicsCard', related_name=False)
-    gpu_3 = fields.ForeignKeyField('models.GraphicsCard', related_name=False)
+    clothes = fields.ForeignKeyField('models.Clothes', null=True)
+    gpu_1 = fields.ForeignKeyField('models.GraphicsCard', related_name=False, null=True)
+    gpu_2 = fields.ForeignKeyField('models.GraphicsCard', related_name=False, null=True)
+    gpu_3 = fields.ForeignKeyField('models.GraphicsCard', related_name=False, null=True)
     is_admin = fields.BooleanField(default=False)
 
     class Meta:
@@ -25,6 +27,13 @@ class AbstractItemModel(Model):
 
     class Meta:
         abstract = True
+
+    def convert_to_dataclass(self):
+        return AppearanceItem(
+            pk=self.pk,
+            price=self.price,
+            image_path=self.image_path
+        )
 
 
 class Skin(AbstractItemModel):

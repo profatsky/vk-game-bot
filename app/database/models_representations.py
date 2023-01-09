@@ -4,6 +4,7 @@ from typing import Optional
 
 @dataclass
 class AppearanceItem:
+    pk: int
     image_path: str
     price: int
 
