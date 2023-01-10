@@ -1,3 +1,3 @@
-from . import user_register
+from . import user_register, main_menu
 
-labelers = [user_register.bl]
+labelers = [user_register.bl, main_menu.bl]

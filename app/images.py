@@ -3,7 +3,36 @@ from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
-from database.models_representations import Character
+from database.models_representations import Character, User
+
+
+def create_profile_image(user: User, vk_user_name: str) -> Image:
+    background_image = Image.new('RGB', (600, 300), color='#FFC700')
+    draw_context = ImageDraw.Draw(background_image)
+    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=35)
+
+    draw_context.text((55, 20), 'Имя:', font=font, fill='black')
+    draw_context.text((55, 65), 'Ник:', font=font, fill='black')
+    draw_context.text((55, 110), 'Банк:', font=font, fill='black')
+    draw_context.text((55, 155), 'Статус:', font=font, fill='black')
+
+    draw_context.text((140, 20), vk_user_name, font=font, fill='black')
+    draw_context.text((140, 65), user.nickname, font=font, fill='black')
+    draw_context.text((158, 110), str(user.balance), font=font, fill='black')
+    user_status = 'Администратор' if user.is_admin else 'Пользователь'
+    draw_context.text((193, 155), user_status, font=font, fill='black')
+
+    clothes = user.clothes
+    if clothes:
+        clothes = clothes.image_path
+    character_image = create_character_image(
+        skin_image_path=user.skin.image_path,
+        face_image_path=user.face.image_path,
+        haircut_image_path=user.haircut.image_path,
+        clothes_image_path=clothes
+    )
+    background_image.paste(character_image, (404, 119), character_image)
+    return background_image
 
 
 def create_choice_image(characters: list[Character], choice_numbers: list[int]) -> Image:
@@ -13,7 +42,7 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
         raise ValueError('Количество номеров для выбора должно быть равно количеству персонажей на изображении')
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype("app/assets/fonts/Fifaks10DEV1.ttf", size=50)
+    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=50)
 
     x_coordinate = 0
     for index, character in enumerate(characters):
