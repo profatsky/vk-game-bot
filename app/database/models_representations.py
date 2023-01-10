@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -12,6 +11,18 @@ class AppearanceItem:
 @dataclass
 class Character:
     skin: AppearanceItem
-    face: Optional[AppearanceItem] = None
-    haircut: Optional[AppearanceItem] = None
-    clothes: Optional[AppearanceItem] = None
+    face: AppearanceItem | None = None
+    haircut: AppearanceItem | None = None
+    clothes: AppearanceItem | None = None
+
+
+@dataclass
+class User:
+    pk: int
+    balance: int
+    nickname: str
+    skin: AppearanceItem
+    face: AppearanceItem
+    haircut: AppearanceItem
+    clothes: AppearanceItem | None
+    is_admin: bool
