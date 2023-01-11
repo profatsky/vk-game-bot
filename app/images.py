@@ -18,21 +18,47 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
 
     draw_context.text((140, 20), vk_user_name, font=font, fill='black')
     draw_context.text((140, 65), user.nickname, font=font, fill='black')
-    draw_context.text((158, 110), str(user.balance), font=font, fill='black')
+    draw_context.text((158, 110), f"${user.balance}", font=font, fill='black')
     user_status = 'Администратор' if user.is_admin else 'Пользователь'
     draw_context.text((193, 155), user_status, font=font, fill='black')
 
-    clothes = user.clothes
+    character = user.character
+    clothes = character.clothes
     if clothes:
         clothes = clothes.image_path
     character_image = create_character_image(
-        skin_image_path=user.skin.image_path,
-        face_image_path=user.face.image_path,
-        haircut_image_path=user.haircut.image_path,
+        skin_image_path=character.skin.image_path,
+        face_image_path=character.face.image_path,
+        haircut_image_path=character.haircut.image_path,
         clothes_image_path=clothes
     )
     background_image.paste(character_image, (404, 119), character_image)
     return background_image
+
+
+def create_shop_image(characters: list[Character], choice_numbers: list[int], prices: list[int]) -> Image:
+    choice_image = create_choice_image(characters, choice_numbers)
+    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=40)
+    draw_context = ImageDraw.Draw(choice_image)
+    draw_context.text(
+        (81 - 12 * len(str(prices[0])), 79),
+        f'${prices[0]:,}'.replace(',', '.'),
+        font=font,
+        fill='black'
+    )
+    draw_context.text(
+        (288 - 12 * len(str(prices[1])), 79),
+        f'${prices[1]:,}'.replace(',', '.'),
+        font=font,
+        fill='black'
+    )
+    draw_context.text(
+        (497 - 12 * len(str(prices[2])), 79),
+        f'${prices[2]:,}'.replace(',', '.'),
+        font=font,
+        fill='black'
+    )
+    return choice_image
 
 
 def create_choice_image(characters: list[Character], choice_numbers: list[int]) -> Image:
@@ -65,14 +91,14 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
             character_image
         )
         draw_context.rectangle(
-            (66 + x_coordinate, 43, 116 + x_coordinate, 93),
+            (66 + x_coordinate, 18, 116 + x_coordinate, 68),
             fill='white',
             outline='black',
             width=3
 
         )
         draw_context.text(
-            (81 + x_coordinate, 45),
+            (81 + x_coordinate, 20),
             str(choice_numbers[index]),
             font=font,
             fill='black'

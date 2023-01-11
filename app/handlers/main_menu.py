@@ -3,10 +3,15 @@ from vkbottle.framework.labeler import BotLabeler
 
 from database.models import UserModel
 from images import create_profile_image, convert_image_to_bytes_io
-from keyboards.menu_keyboards import main_menu_keyboard
+from keyboards.menu import main_menu_keyboard, shop_menu_keyboard
 from utils.vk import upload_image, get_user_name
 
 bl = BotLabeler()
+
+
+@bl.private_message(payload={"main_menu": "back"})
+async def back_to_menu(message: Message):
+    await message.answer("🎈 Главное меню", keyboard=main_menu_keyboard)
 
 
 @bl.private_message(payload={'main_menu': 'profile'})
@@ -23,4 +28,15 @@ async def show_profile(message: Message):
         message='👤 Ваш профиль',
         attachment=image,
         keyboard=main_menu_keyboard
+    )
+
+
+@bl.private_message(payload={'main_menu': 'shop'})
+async def show_shop_menu(message: Message):
+    await message.answer(
+        '✏ Кастомизация персонажа\n'
+        'Покупка атрибутов внешнего вида\n\n'
+        '📼 Видеокарты\n'
+        'Видеокарты каждый час приносят прибыль. Чем дороже модель видеокарты, тем выше доход',
+        keyboard=shop_menu_keyboard
     )
