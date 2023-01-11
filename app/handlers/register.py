@@ -8,8 +8,8 @@ from config import bot
 from database.models_representations import Character
 from handlers.main_menu import show_profile
 from images import create_choice_image, convert_image_to_bytes_io
-from keyboards.register_keyboards import register_choice_keyboard
-from states.register_states import RegisterState
+from keyboards.register import register_choice_keyboard
+from states.register import RegisterState
 from utils.database import is_user_exists
 from utils.vk import upload_image
 
