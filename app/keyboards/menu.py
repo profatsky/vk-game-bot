@@ -13,7 +13,7 @@ main_menu_keyboard = (
 shop_menu_keyboard = (
     Keyboard()
     .add(Text('✏ Кастомизация персонажа', payload={'shop_menu': 'character'}), color=KeyboardButtonColor.PRIMARY)
-    .add(Text('📼 Видеокарты', payload={'mining_menu': 'buy_cards'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('📼 Видеокарты', payload={'shop_menu': 'gpu'}), color=KeyboardButtonColor.PRIMARY)
     .row()
     .add(Text('◀ В главное меню', payload={'main_menu': 'back'}))
 )

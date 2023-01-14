@@ -22,6 +22,15 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
     user_status = 'Администратор' if user.is_admin else 'Пользователь'
     draw_context.text((193, 155), user_status, font=font, fill='black')
 
+    x_coordinate = 55
+    for i in range(3):
+        if len(user.graphics_cards) >= i + 1:
+            card_image = open_image(user.graphics_cards[i].image_path)
+        else:
+            card_image = open_image('gpu/no_card.png')
+        background_image.paste(card_image, (x_coordinate, 200), card_image)
+        x_coordinate += 105
+
     character = user.character
     clothes = character.clothes
     if clothes:

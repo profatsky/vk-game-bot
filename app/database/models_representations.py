@@ -2,18 +2,23 @@ from dataclasses import dataclass
 
 
 @dataclass
-class AppearanceItem:
+class Item:
     pk: int
     image_path: str
     price: int
 
 
 @dataclass
+class GraphicsCard(Item):
+    income: int
+
+
+@dataclass
 class Character:
-    skin: AppearanceItem
-    face: AppearanceItem | None = None
-    haircut: AppearanceItem | None = None
-    clothes: AppearanceItem | None = None
+    skin: Item
+    face: Item | None = None
+    haircut: Item | None = None
+    clothes: Item | None = None
 
 
 @dataclass
@@ -21,8 +26,6 @@ class User:
     pk: int
     balance: int
     nickname: str
-    skin: AppearanceItem
-    face: AppearanceItem
-    haircut: AppearanceItem
-    clothes: AppearanceItem | None
+    character: Character
+    graphics_cards: list[GraphicsCard]
     is_admin: bool
