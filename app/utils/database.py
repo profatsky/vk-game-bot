@@ -13,3 +13,13 @@ async def is_enough_money(vk_id: int, money: int) -> bool:
 async def get_user_balance(vk_id: int) -> int:
     user = await UserModel.get(vk_id=vk_id)
     return user.balance
+
+
+async def get_free_gpu_slot(vk_id: int) -> str | None:
+    user = await UserModel.get(vk_id=vk_id)
+    if not user.gpu_1:
+        return 'gpu_1'
+    elif not user.gpu_2:
+        return 'gpu_2'
+    elif not user.gpu_3:
+        return 'gpu_3'

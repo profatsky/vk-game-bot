@@ -7,9 +7,9 @@ def generate_shop_keyboard(
         next_page: bool
 ) -> Keyboard:
     keyboard = generate_choice_keyboard_with_numbers(numbers).row()
-    prev_page_button = Text('◀ Пред.стр', payload={"choice": "prev_page"})
-    next_page_button = Text('▶ След.стр', payload={"choice": "next_page"})
-    back_to_shop_button = Text('◀🏬 В магазин', payload={"choice": "back_to_shop"})
+    prev_page_button = Text('◀ Пред.стр', payload={'choice': 'prev_page'})
+    next_page_button = Text('▶ След.стр', payload={'choice': 'next_page'})
+    back_to_shop_button = Text('◀🏬 В магазин', payload={'choice': 'back_to_shop'})
     if prev_page and next_page:
         keyboard.add(prev_page_button)
         keyboard.add(next_page_button).row()
@@ -22,6 +22,12 @@ def generate_shop_keyboard(
         keyboard.add(next_page_button)
     else:
         keyboard.add(back_to_shop_button)
+    return keyboard
+
+
+def generate_sell_gpu_keyboard(numbers: list[int]) -> Keyboard:
+    keyboard = generate_choice_keyboard_with_numbers(numbers).row()
+    keyboard.add(Text('◀ Назад', payload={'choice': 'back'}))
     return keyboard
 
 

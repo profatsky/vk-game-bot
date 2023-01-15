@@ -8,7 +8,7 @@ from vkbottle.framework.labeler import BotLabeler
 from config import bot
 from database.models import UserModel, GraphicsCardModel, MiningModel
 from handlers.main_menu import show_shop_menu, show_profile
-from keyboards.mining import mining_keyboard
+from keyboards.income import mining_menu_keyboard
 from keyboards.shop import gpu_shop_keyboard
 from states.shop import GPUShopState
 from utils.database import get_free_gpu_slot, is_enough_money
@@ -46,7 +46,7 @@ async def buy_gpu(message: Message):
         if not free_slot:
             return await message.answer(
                 message='❗ Вы уже владеете максимальным количеством видеокарт',
-                keyboard=mining_keyboard
+                keyboard=mining_menu_keyboard
             )
 
         if await is_enough_money(message.from_id, choice):

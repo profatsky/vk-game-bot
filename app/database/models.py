@@ -34,8 +34,7 @@ class UserModel(Model):
 
         graphics_cards = []
         for card in [await self.gpu_1, await self.gpu_2, await self.gpu_3]:
-            if card:
-                graphics_cards.append(card.convert_to_dataclass())
+            graphics_cards.append(card.convert_to_dataclass() if card else None)
 
         return User(
             pk=self.pk,
