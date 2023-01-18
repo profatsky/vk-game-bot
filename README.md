@@ -1,21 +1,25 @@
 # vk-game-bot
 ## Описание
 
-Игровой чат-бот в ВКонтакте, написанный на Python с помощью <a href="https://github.com/vkbottle/vkbottle">VKBottle</a> и <a href="https://github.com/python-pillow/Pillow">Pillow</a>
+Игровой чат-бот в ВКонтакте
+* [VKBottle](https://github.com/vkbottle/vkbottle)
+* [Pillow для генерации изображений](https://github.com/python-pillow/Pillow)
+* [Tortoise ORM](https://github.com/tortoise/tortoise-orm)
+* [Aerich для миграций](https://github.com/tortoise/aerich)
+* БД MySQL
 
----
 ## Основной функционал:
 * Регистрация и создание персонажа
-![register](files/gif/register.gif)
+![register](app/assets/gif/register.gif)
 ---
 * Изменение внешности персонажа (одежда, прическа, лицо, цвет кожи)
-![shop](files/gif/shop.gif)
+![shop](app/assets/gif/shop.gif)
 ---
 * Заработок монеток (покупка видеокарт, приносящих прибыль)
-![cards](files/gif/cards.gif)
+![cards](app/assets/gif/cards.gif)
 --- 
 * Игры (блэкджек, камень-ножницы-бумага, монетка)
-![game](files/gif/game.gif)
+![game](app/assets/gif/game.gif)
 
 ## Настройка виртуального окружения и установка зависимостей
 ```
@@ -38,3 +42,8 @@ DB_HOST = localhost
 DB_USER = пользователь БД
 DB_PASSWORD = пароль БД
 ```
+
+### Возникли вопросы?
+ВКонтакте: https://vk.com/profatsky
+
+Telegram: @profatsky
