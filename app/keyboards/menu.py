@@ -17,3 +17,13 @@ shop_menu_keyboard = (
     .row()
     .add(Text('◀ В главное меню', payload={'main_menu': 'back'}))
 )
+
+games_menu_keyboard = (
+    Keyboard(one_time=True, inline=False)
+        .add(Text('👋 Цуефа', payload={'games': 'tsuefa'}), color=KeyboardButtonColor.PRIMARY)
+        .add(Text('🃏 Blackjack', payload={'games': 'blackjack'}), color=KeyboardButtonColor.PRIMARY)
+        .add(Text('🦅 Монетка', payload={'games': 'coinflip'}), color=KeyboardButtonColor.PRIMARY)
+        .row()
+        .add(Text('◀ В главное меню', payload={'main_menu': 'back'}))
+        .get_json()
+)

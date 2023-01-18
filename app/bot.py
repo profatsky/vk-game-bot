@@ -22,7 +22,7 @@ async def startup_task():
 
 
 # warnings.filterwarnings("ignore", category=Warning)
-logger.disable('vkbottle')
+# logger.disable('vkbottle')
 
 if __name__ == '__main__':
     bot.loop_wrapper.on_startup.append(startup_task())

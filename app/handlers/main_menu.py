@@ -4,7 +4,7 @@ from vkbottle.framework.labeler import BotLabeler
 from database.models import UserModel
 from images import create_profile_image, convert_image_to_bytes_io
 from keyboards.income import income_menu_keyboard
-from keyboards.menu import main_menu_keyboard, shop_menu_keyboard
+from keyboards.menu import main_menu_keyboard, shop_menu_keyboard, games_menu_keyboard
 from utils.vk import upload_image, get_user_name
 
 bl = BotLabeler()
@@ -58,4 +58,17 @@ async def show_income_menu(message: Message):
         '🖥 Майнинг - фермы:\n'
         'Покупайте видеокарты, которые каждый час приносят прибыль',
         keyboard=income_menu_keyboard
+    )
+
+
+@bl.private_message(payload={'main_menu': 'games'})
+async def games(message: Message):
+    await message.answer(f'Список игр', keyboard=games_menu_keyboard)
+
+
+@bl.private_message()
+async def unknown_message(message: Message):
+    await message.answer(
+        '😕 Я вас не понимаю',
+        keyboard=main_menu_keyboard
     )
