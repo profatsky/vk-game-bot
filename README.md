@@ -1,7 +1,7 @@
 # vk-game-bot
 ## Описание
 
-Игровой чат-бот в ВКонтакте, написанный на Python с помощью <a href="https://github.com/vkbottle/vkbottle">VKBottle</a> и <a href="https://github.com/python-pillow/Pillow">Pillow</a> (для визуализации).
+Игровой чат-бот в ВКонтакте, написанный на Python с помощью <a href="https://github.com/vkbottle/vkbottle">VKBottle</a> и <a href="https://github.com/python-pillow/Pillow">Pillow</a>
 
 ---
 ## Основной функционал:
@@ -17,18 +17,24 @@
 * Игры (блэкджек, камень-ножницы-бумага, монетка)
 ![game](files/gif/game.gif)
 
-## Настройка и установка
+## Настройка виртуального окружения и установка зависимостей
 ```
-> git clone https://github.com/profatsky/vk-game-bot.git
-
-> cd vk-game-bot
-
 > python -m venv venv
 
-> venv\Scripts\activate.bat
+> venv\Scripts\activate.bat - для Windows
 
-> python3 -m pip install -r requirements.txt
+> source venv/bin/activate - для Linux и MacOS
+
+> python -m pip install -r requirements.txt
 ```
-После клонирования репозитория переименуйте файл .env
-example в .env и укажите необходимые значения: токен и
-данные для подключения к MySQL
+
+## Конфиг
+Переименуйте файл .env.example в .env, укажите токен сообщества ВК и необходимые данные для подключения к MySQL
+```
+TOKEN = токен сообщества ВК
+
+DB_NAME = имя БД
+DB_HOST = localhost
+DB_USER = пользователь БД
+DB_PASSWORD = пароль БД
+```
