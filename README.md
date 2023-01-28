@@ -43,6 +43,11 @@ DB_USER = пользователь БД
 DB_PASSWORD = пароль БД
 ```
 
+## Применение миграций
+```
+> aerich upgrade
+```
+
 ### Возникли вопросы?
 ВКонтакте: https://vk.com/profatsky
 
