@@ -27,7 +27,7 @@ DATABASE_CONFIG = {
     },
     'apps': {
         'models': {
-            'models': ['app.database.models', 'aerich.models'],
+            'models': ['app.database', 'aerich.models'],
             'default_connection': 'default',
         },
     },
