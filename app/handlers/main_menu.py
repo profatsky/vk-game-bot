@@ -64,11 +64,3 @@ async def show_income_menu(message: Message):
 @bl.private_message(payload={'main_menu': 'games'})
 async def games(message: Message):
     await message.answer(f'Список игр', keyboard=games_menu_keyboard)
-
-
-@bl.private_message()
-async def unknown_message(message: Message):
-    await message.answer(
-        '😕 Я вас не понимаю',
-        keyboard=main_menu_keyboard
-    )

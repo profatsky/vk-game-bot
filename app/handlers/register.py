@@ -1,4 +1,5 @@
 import json
+import os
 
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
@@ -8,6 +9,7 @@ from config import bot
 from database.models_representations import Character
 from handlers.main_menu import show_profile
 from images import create_choice_image, convert_image_to_bytes_io
+from keyboards.menu import main_menu_keyboard
 from keyboards.register import register_choice_keyboard
 from states.register import RegisterState
 from utils.database import is_user_exists
@@ -19,10 +21,12 @@ bl = BotLabeler()
 @bl.private_message(text='Начать')
 async def start(message: Message):
     if await is_user_exists(message.from_id):
-        await message.answer('❗ Вы уже зарегистрированы!')
-        await show_profile(message)
+        await message.answer(
+            '😕 Я вас не понимаю',
+            keyboard=main_menu_keyboard
+        )
     else:
-        image = await upload_image('app/assets/img/start.png')
+        image = await upload_image('assets/img/start.png')
         await message.answer(
             message='Выберите цвет кожи',
             attachment=image,

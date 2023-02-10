@@ -9,7 +9,7 @@ from database.models_representations import Character, User
 def create_profile_image(user: User, vk_user_name: str) -> Image:
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=35)
+    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=35)
 
     draw_context.text((55, 20), 'Имя:', font=font, fill='black')
     draw_context.text((55, 65), 'Ник:', font=font, fill='black')
@@ -47,7 +47,7 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
 
 def create_shop_image(characters: list[Character], choice_numbers: list[int], prices: list[int]) -> Image:
     choice_image = create_choice_image(characters, choice_numbers)
-    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=40)
+    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=40)
     draw_context = ImageDraw.Draw(choice_image)
     draw_context.text(
         (81 - 12 * len(str(prices[0])), 79),
@@ -77,7 +77,7 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
         raise ValueError('Количество номеров для выбора должно быть равно количеству персонажей на изображении')
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('app/assets/fonts/Fifaks10DEV1.ttf', size=50)
+    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=50)
 
     x_coordinate = 0
     for index, character in enumerate(characters):
@@ -140,7 +140,7 @@ def create_character_image(
 
 
 def open_image(image_path: str):
-    return Image.open(f'app/assets/img/{image_path}')
+    return Image.open(f'assets/img/{image_path}')
 
 
 def convert_image_to_bytes_io(img: Image, image_path: str = 'img') -> BytesIO:
