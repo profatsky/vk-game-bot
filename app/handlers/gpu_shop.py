@@ -19,7 +19,7 @@ bl = BotLabeler()
 
 @bl.private_message(payload={'shop_menu': 'gpu'})
 async def open_gpu_shop(message: Message):
-    image = await upload_image('app/assets/img/gpu_shop.png')
+    image = await upload_image('assets/img/gpu_shop.png')
     await message.answer(
         message='📼 Видеокарты доступные для покупки\n\n❗ '
                 'Каждый пользователь может владеть лишь 3 видеокартами',
