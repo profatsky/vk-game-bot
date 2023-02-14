@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `skins` (
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `vk_id` INT NOT NULL UNIQUE,
-    `balance` INT NOT NULL  DEFAULT 0,
+    `balance` INT NOT NULL  DEFAULT 1500,
     `nickname` VARCHAR(16) NOT NULL,
     `is_admin` BOOL NOT NULL  DEFAULT 0,
     `clothes_id` INT,

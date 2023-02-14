@@ -6,7 +6,7 @@ from database.models_representations import Item, User, Character, GraphicsCard
 
 class UserModel(Model):
     vk_id = fields.IntField(unique=True)
-    balance = fields.IntField(default=0)
+    balance = fields.IntField(default=1500)
     nickname = fields.CharField(max_length=16)
     skin = fields.ForeignKeyField('models.SkinModel')
     face = fields.ForeignKeyField('models.FaceModel')
