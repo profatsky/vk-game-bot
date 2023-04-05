@@ -50,8 +50,8 @@ async def buy_gpu(message: Message):
                 text='❗ Вы уже владеете максимальным количеством видеокарт',
                 keyboard=mining_menu_keyboard
             )
-        if await is_enough_money(message.from_id, choice):
-            chosen_gpu = await GraphicsCardModel.get(pk=choice)
+        chosen_gpu = await GraphicsCardModel.get(pk=choice)
+        if await is_enough_money(message.from_id, chosen_gpu.price):
             await UserModel.filter(vk_id=message.from_id).update(
                 balance=F('balance') - chosen_gpu.price, **{f'{free_slot}_id': choice},
             )
