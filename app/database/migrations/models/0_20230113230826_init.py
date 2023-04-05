@@ -4,42 +4,42 @@ from tortoise import BaseDBAsyncClient
 async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
         CREATE TABLE IF NOT EXISTS `clothes` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `price` INT NOT NULL  DEFAULT 0,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `price` INTEGER NOT NULL  DEFAULT 0,
     `image_path` VARCHAR(256) NOT NULL
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `faces` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `price` INT NOT NULL  DEFAULT 0,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `price` INTEGER NOT NULL  DEFAULT 0,
     `image_path` VARCHAR(256) NOT NULL
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `gpu` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `price` INT NOT NULL  DEFAULT 0,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `price` INTEGER NOT NULL  DEFAULT 0,
     `image_path` VARCHAR(256) NOT NULL,
-    `income` INT NOT NULL
-) CHARACTER SET utf8mb4;
+    `income` INTEGER NOT NULL
+);
 CREATE TABLE IF NOT EXISTS `haircuts` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `price` INT NOT NULL  DEFAULT 0,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `price` INTEGER NOT NULL  DEFAULT 0,
     `image_path` VARCHAR(256) NOT NULL
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `skins` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `price` INT NOT NULL  DEFAULT 0,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `price` INTEGER NOT NULL  DEFAULT 0,
     `image_path` VARCHAR(256) NOT NULL
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `users` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `vk_id` INT NOT NULL UNIQUE,
-    `balance` INT NOT NULL  DEFAULT 1500,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `vk_id` INTEGER NOT NULL UNIQUE,
+    `balance` INTEGER NOT NULL  DEFAULT 1500,
     `nickname` VARCHAR(16) NOT NULL,
     `is_admin` BOOL NOT NULL  DEFAULT 0,
-    `clothes_id` INT,
-    `face_id` INT NOT NULL,
-    `gpu_1_id` INT,
-    `gpu_2_id` INT,
-    `gpu_3_id` INT,
+    `clothes_id` INTEGER,
+    `face_id` INTEGER NOT NULL,
+    `gpu_1_id` INTEGER,
+    `gpu_2_id` INTEGER,
+    `gpu_3_id` INTEGER,
     `haircut_id` INT NOT NULL,
     `skin_id` INT NOT NULL,
     CONSTRAINT `fk_users_clothes_cefbd78a` FOREIGN KEY (`clothes_id`) REFERENCES `clothes` (`id`) ON DELETE CASCADE,
@@ -49,21 +49,21 @@ CREATE TABLE IF NOT EXISTS `users` (
     CONSTRAINT `fk_users_gpu_affb2aba` FOREIGN KEY (`gpu_3_id`) REFERENCES `gpu` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_users_haircuts_e3ffd613` FOREIGN KEY (`haircut_id`) REFERENCES `haircuts` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_users_skins_7e83cc18` FOREIGN KEY (`skin_id`) REFERENCES `skins` (`id`) ON DELETE CASCADE
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `mining` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `gpu_1` DATETIME(6),
     `gpu_2` DATETIME(6),
     `gpu_3` DATETIME(6),
-    `user_id` INT NOT NULL UNIQUE,
+    `user_id` INTEGER NOT NULL UNIQUE,
     CONSTRAINT `fk_mining_users_bec9b01d` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) CHARACTER SET utf8mb4;
+);
 CREATE TABLE IF NOT EXISTS `aerich` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `version` VARCHAR(255) NOT NULL,
     `app` VARCHAR(100) NOT NULL,
     `content` JSON NOT NULL
-) CHARACTER SET utf8mb4;
+);
 INSERT INTO `skins` (`price`, `image_path`) VALUES 
 (500, 'skins/skin1.png'), (500, 'skins/skin2.png'), (500, 'skins/skin3.png');
 INSERT INTO `clothes` (`price`, `image_path`) VALUES 

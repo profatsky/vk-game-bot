@@ -7,11 +7,6 @@ from vkbottle.framework.labeler import BotLabeler
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
-DB_NAME = os.getenv("DB_NAME")
-DB_HOST = os.getenv("DB_HOST")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
 labeler = BotLabeler()
 bot = Bot(
     token=TOKEN,
@@ -20,10 +15,7 @@ bot = Bot(
 
 DATABASE_CONFIG = {
     'connections': {
-        'default': 'mysql://{user}:{password}@{host}/{database}'.format(
-            user=DB_USER, password=DB_PASSWORD,
-            host=DB_HOST, database=DB_NAME
-        )
+        'default': 'sqlite://app/database/db.sqlite3?journal_mode=delete'
     },
     'apps': {
         'models': {

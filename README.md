@@ -6,7 +6,7 @@
 * [Pillow для генерации изображений](https://github.com/python-pillow/Pillow)
 * [Tortoise ORM](https://github.com/tortoise/tortoise-orm)
 * [Aerich для миграций](https://github.com/tortoise/aerich)
-* БД MySQL
+* База данных SQLite
 
 ## Основной функционал:
 * Регистрация и создание персонажа
@@ -33,14 +33,9 @@
 ```
 
 ## Конфиг
-Переименуйте файл .env.example в .env, укажите токен сообщества ВК и необходимые данные для подключения к MySQL
+Переименуйте файл .env.example в .env и укажите в нем токен вашего сообщества ВК
 ```
 TOKEN = токен сообщества ВК
-
-DB_NAME = имя БД
-DB_HOST = localhost
-DB_USER = пользователь БД
-DB_PASSWORD = пароль БД
 ```
 
 ## Применение миграций
