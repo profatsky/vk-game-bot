@@ -44,11 +44,12 @@ async def buy_gpu(message: Message):
     else:
         free_slot = await get_free_gpu_slot(message.from_id)
         if not free_slot:
-            return await message.answer(
-                message='❗ Вы уже владеете максимальным количеством видеокарт',
+            await bot.state_dispenser.delete(message.from_id)
+            return await show_profile(
+                message=message,
+                text='❗ Вы уже владеете максимальным количеством видеокарт',
                 keyboard=mining_menu_keyboard
             )
-
         if await is_enough_money(message.from_id, choice):
             chosen_gpu = await GraphicsCardModel.get(pk=choice)
             await UserModel.filter(vk_id=message.from_id).update(
@@ -59,8 +60,10 @@ async def buy_gpu(message: Message):
                 user_id=user.pk,
                 defaults={free_slot: datetime.datetime.now()}
             )
-            await message.answer(f'🥳 Вы приобрели видеокарту за ${chosen_gpu.price}')
-            await bot.state_dispenser.delete(message.from_id)
-            await show_profile(message)
+            await show_profile(
+                message,
+                text=f'🥳 Вы приобрели видеокарту за ${chosen_gpu.price}',
+                keyboard=gpu_shop_keyboard
+            )
         else:
             await message.answer('❗ У вас недостаточно средств!')
