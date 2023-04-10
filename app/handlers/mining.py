@@ -7,30 +7,12 @@ from vkbottle.framework.labeler import BotLabeler
 
 from config import bot
 from database.models import UserModel, MiningModel
-from handlers.gpu_shop import open_gpu_shop
 from handlers.main_menu import show_profile
 from keyboards.income import mining_menu_keyboard
 from states.shop import GPUShopState
 from utils.keyboards import generate_sell_gpu_keyboard
 
 bl = BotLabeler()
-
-
-@bl.private_message(payload={'income_menu': 'mining'})
-async def open_mining_menu(message: Message):
-    user = await UserModel.get(vk_id=message.from_id)
-    if not await user.gpu_1 and not await user.gpu_2 and not await user.gpu_3:
-        await message.answer(
-            "❗ У вас нет видеокарт. "
-            "Вы можете купить их в магазине 🏬"
-        )
-        await open_gpu_shop(message)
-    else:
-        await show_profile(
-            message=message,
-            text='📼 Управление видеокартами',
-            keyboard=mining_menu_keyboard
-        )
 
 
 @bl.private_message(payload={'mining_menu': 'get_income'})
