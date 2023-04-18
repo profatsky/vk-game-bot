@@ -43,6 +43,13 @@ TOKEN = токен сообщества ВК
 > aerich upgrade
 ```
 
+## Запуск
+```
+> cd app
+
+> python bot.py
+```
+
 ### Возникли вопросы?
 ВКонтакте: https://vk.com/profatsky
 
