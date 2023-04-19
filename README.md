@@ -10,16 +10,16 @@
 
 ## Основной функционал:
 * Регистрация и создание персонажа
-![register](app/assets/gif/register.gif)
+![register](src/assets/gif/register.gif)
 ---
 * Изменение внешности персонажа (одежда, прическа, лицо, цвет кожи)
-![shop](app/assets/gif/shop.gif)
+![shop](src/assets/gif/shop.gif)
 ---
 * Заработок монеток (покупка видеокарт, приносящих прибыль)
-![cards](app/assets/gif/cards.gif)
+![cards](src/assets/gif/cards.gif)
 --- 
 * Игры (блэкджек, камень-ножницы-бумага, монетка)
-![game](app/assets/gif/game.gif)
+![game](src/assets/gif/game.gif)
 
 ## Настройка виртуального окружения и установка зависимостей
 ```
@@ -45,7 +45,7 @@ TOKEN = токен сообщества ВК
 
 ## Запуск
 ```
-> cd app
+> cd src
 
 > python bot.py
 ```

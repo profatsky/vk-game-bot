@@ -28,4 +28,4 @@ class User:
     nickname: str
     character: Character
     graphics_cards: list[GraphicsCard]
-    is_admin: bool
+    status: str

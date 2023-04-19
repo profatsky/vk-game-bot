@@ -19,8 +19,7 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
     draw_context.text((140, 20), vk_user_name, font=font, fill='black')
     draw_context.text((140, 65), user.nickname, font=font, fill='black')
     draw_context.text((158, 110), f"${user.balance}", font=font, fill='black')
-    user_status = 'Администратор' if user.is_admin else 'Пользователь'
-    draw_context.text((193, 155), user_status, font=font, fill='black')
+    draw_context.text((193, 155), user.status, font=font, fill='black')
 
     x_coordinate = 55
     for card in user.graphics_cards:

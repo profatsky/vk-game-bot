@@ -5,6 +5,15 @@ from database.models_representations import Item, User, Character, GraphicsCard
 
 
 class UserModel(Model):
+    statuses = (
+        ('Пользователь', 'Пользователь'),
+        ('Хелпер', 'Оператор технической поддержки'),
+        ('Модератор', 'Модератор'),
+        ('Администратор', 'Администратор'),
+        ('Гл.Администратор', 'Главный администратор'),
+        ('Основатель', 'Основатель')
+    )
+
     vk_id = fields.IntField(unique=True)
     balance = fields.IntField(default=1500)
     nickname = fields.CharField(max_length=16)
@@ -15,7 +24,7 @@ class UserModel(Model):
     gpu_1 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
     gpu_2 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
     gpu_3 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
-    is_admin = fields.BooleanField(default=False)
+    status = fields.CharField(max_length=24, choiсes=statuses, default='Пользователь')
 
     class Meta:
         table = 'users'
@@ -42,7 +51,7 @@ class UserModel(Model):
             nickname=self.nickname,
             character=character,
             graphics_cards=graphics_cards,
-            is_admin=self.is_admin
+            status=self.status
         )
 
 

@@ -15,12 +15,12 @@ bot = Bot(
 
 DATABASE_CONFIG = {
     'connections': {
-        'default': 'sqlite://app/database/db.sqlite3?journal_mode=delete'
+        'default': 'sqlite://src/database/db.sqlite3?journal_mode=delete'
     },
     'apps': {
         'models': {
-            'models': ['app.database', 'aerich.models'],
+            'models': ['database.models', 'aerich.models'],
             'default_connection': 'default',
-        },
+        }
     },
 }
