@@ -3,7 +3,7 @@ from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
-from database.models_representations import Character, User
+from users.models_representations import User, Character
 
 
 def create_profile_image(user: User, vk_user_name: str) -> Image:

@@ -11,7 +11,7 @@ for custom_labeler in labelers:
 async def startup_task():
     await Tortoise.init(
         db_url='sqlite://database/db.sqlite3?journal_mode=delete',
-        modules={'models': ['database.models']}
+        modules={'models': ['users.models', 'mining.models']}
     )
     print('База данных подключена')
 

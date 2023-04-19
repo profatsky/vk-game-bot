@@ -1,7 +1,6 @@
-from tortoise.models import Model
-from tortoise import fields
+from tortoise import Model, fields
 
-from database.models_representations import Item, User, Character, GraphicsCard
+from users.models_representations import User, Character, GraphicsCard, Item
 
 
 class UserModel(Model):
@@ -103,13 +102,3 @@ class GraphicsCardModel(AbstractItemModel):
             image_path=self.image_path,
             income=self.income
         )
-
-
-class MiningModel(Model):
-    user = fields.OneToOneField('models.UserModel')
-    gpu_1 = fields.DatetimeField(null=True)
-    gpu_2 = fields.DatetimeField(null=True)
-    gpu_3 = fields.DatetimeField(null=True)
-
-    class Meta:
-        table = 'mining'

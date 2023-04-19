@@ -1,21 +1,22 @@
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
-from database.models import UserModel
-from images import create_profile_image, convert_image_to_bytes_io
-from keyboards.income import income_menu_keyboard
-from keyboards.menu import main_menu_keyboard, shop_menu_keyboard, games_menu_keyboard
-from utils.vk import upload_image, get_user_name
+from games.keyboards import games_menu_keyboard
+from images.gen import create_profile_image, convert_image_to_bytes_io
+from images.utils import upload_image
+from menu.keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard
+from users.models import UserModel
+from users.utils import get_user_name
 
 bl = BotLabeler()
 
 
-@bl.private_message(payload={"main_menu": "back"})
+@bl.private_message(payload={"menu": "back"})
 async def back_to_menu(message: Message):
     await message.answer("🎈 Главное меню", keyboard=main_menu_keyboard)
 
 
-@bl.private_message(payload={'main_menu': 'profile'})
+@bl.private_message(payload={'menu': 'profile'})
 async def show_profile(
         message: Message,
         text='👤 Ваш профиль',
@@ -36,7 +37,7 @@ async def show_profile(
     )
 
 
-@bl.private_message(payload={'main_menu': 'shop'})
+@bl.private_message(payload={'menu': 'shop'})
 async def show_shop_menu(message: Message):
     await message.answer(
         '✏ Кастомизация персонажа\n'
@@ -48,7 +49,7 @@ async def show_shop_menu(message: Message):
     )
 
 
-@bl.private_message(payload={'main_menu': 'income'})
+@bl.private_message(payload={'menu': 'income'})
 async def show_income_menu(message: Message):
     await message.answer(
         'Как заработать 💵?\n\n'
@@ -62,6 +63,6 @@ async def show_income_menu(message: Message):
     )
 
 
-@bl.private_message(payload={'main_menu': 'games'})
+@bl.private_message(payload={'menu': 'games'})
 async def games(message: Message):
     await message.answer(f'Список игр', keyboard=games_menu_keyboard)

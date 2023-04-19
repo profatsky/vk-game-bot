@@ -1,19 +1,17 @@
-import json
-import os
-
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
+from vkbottle.modules import json
 
-from database.models import UserModel, SkinModel, FaceModel, HaircutModel
 from config import bot
-from database.models_representations import Character
-from handlers.main_menu import show_profile
-from images import create_choice_image, convert_image_to_bytes_io
-from keyboards.menu import main_menu_keyboard
-from keyboards.register import register_choice_keyboard
-from states.register import RegisterState
-from utils.database import is_user_exists
-from utils.vk import upload_image
+from images.gen import create_choice_image, convert_image_to_bytes_io
+from images.utils import upload_image
+from menu.handlers import show_profile
+from menu.keyboards import main_menu_keyboard
+from .utils import is_user_exists
+from .keyboards import register_choice_keyboard
+from .models import UserModel, SkinModel, FaceModel, HaircutModel
+from .models_representations import Character
+from .states import RegisterState
 
 bl = BotLabeler()
 

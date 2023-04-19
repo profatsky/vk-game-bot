@@ -1,19 +1,19 @@
 import dataclasses
-import json
 
 from tortoise.expressions import Q, F
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
+from vkbottle.modules import json
 
+from character_shop.keyboards import character_shop_keyboard
+from character_shop.states import CharacterShopState
 from config import bot
-from database.models import SkinModel, UserModel, HaircutModel, ClothesModel, FaceModel
-from handlers.main_menu import show_profile
-from images import create_shop_image, convert_image_to_bytes_io
-from keyboards.shop import character_shop_keyboard
-from states.shop import CharacterShopState
-from utils.database import is_enough_money
-from utils.keyboards import generate_shop_keyboard
-from utils.vk import upload_image
+from images.gen import create_shop_image, convert_image_to_bytes_io
+from images.utils import upload_image
+from menu.handlers import show_profile
+from menu.utils import generate_shop_keyboard
+from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel
+from users.utils import is_enough_money
 
 bl = BotLabeler()
 

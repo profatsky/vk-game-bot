@@ -1,18 +1,19 @@
-import datetime
-import json
+from datetime import datetime
 
 from tortoise.expressions import F
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
+from vkbottle.modules import json
 
 from config import bot
-from database.models import UserModel, GraphicsCardModel, MiningModel
-from handlers.main_menu import show_shop_menu, show_profile
-from keyboards.income import mining_menu_keyboard
-from keyboards.shop import gpu_shop_keyboard
-from states.shop import GPUShopState
-from utils.database import get_free_gpu_slot, is_enough_money
-from utils.vk import upload_image
+from images.utils import upload_image
+from menu.handlers import show_shop_menu, show_profile
+from mining.keyboards import mining_menu_keyboard
+from mining.models import MiningModel
+from users.models import GraphicsCardModel, UserModel
+from users.utils import get_free_gpu_slot, is_enough_money
+from .keyboards import gpu_shop_keyboard
+from .states import GPUShopState
 
 bl = BotLabeler()
 
@@ -58,7 +59,7 @@ async def buy_gpu(message: Message):
             user = await UserModel.get(vk_id=message.from_id)
             await MiningModel.update_or_create(
                 user_id=user.pk,
-                defaults={free_slot: datetime.datetime.now()}
+                defaults={free_slot: datetime.utcnow()}
             )
             await show_profile(
                 message,

@@ -1,18 +1,37 @@
-import json
 from datetime import datetime, timedelta
 
 from tortoise.expressions import F
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
+from vkbottle.modules import json
 
 from config import bot
-from database.models import UserModel, MiningModel
-from handlers.main_menu import show_profile
-from keyboards.income import mining_menu_keyboard
-from states.shop import GPUShopState
-from utils.keyboards import generate_sell_gpu_keyboard
+from gpu_shop.handlers import open_gpu_shop
+from gpu_shop.states import GPUShopState
+from menu.handlers import show_profile
+from users.models import UserModel
+from .keyboards import mining_menu_keyboard
+from .models import MiningModel
+from .utils import generate_sell_gpu_keyboard
 
 bl = BotLabeler()
+
+
+@bl.private_message(payload={'income_menu': 'mining'})
+async def open_mining_menu(message: Message):
+    user = await UserModel.get(vk_id=message.from_id)
+    if not await user.gpu_1 and not await user.gpu_2 and not await user.gpu_3:
+        await message.answer(
+            "❗ У вас нет видеокарт. "
+            "Вы можете купить их в магазине 🏬"
+        )
+        await open_gpu_shop(message)
+    else:
+        await show_profile(
+            message=message,
+            text='📼 Управление видеокартами',
+            keyboard=mining_menu_keyboard
+        )
 
 
 @bl.private_message(payload={'mining_menu': 'get_income'})
@@ -27,14 +46,14 @@ async def get_mining_income(message: Message):
     for i in range(1, 4):
         gpu_field_name = f'gpu_{i}'
         if getattr(mining, gpu_field_name):
-            mining_time = datetime.now() - getattr(mining, gpu_field_name).replace(tzinfo=None)
+            mining_time = datetime.utcnow() - getattr(mining, gpu_field_name).replace(tzinfo=None)
             hours = int(mining_time / timedelta(hours=1))
             income = hours * (await getattr(user, gpu_field_name)).income
             if income:
                 total_income += income
                 # Оставшиеся минуты за вычетом часов работы видеокарты
                 remaining_minutes = (mining_time - timedelta(hours=hours)) / timedelta(minutes=1)
-                new_start_time = datetime.now() - timedelta(minutes=remaining_minutes)
+                new_start_time = datetime.utcnow() - timedelta(minutes=remaining_minutes)
                 setattr(mining, gpu_field_name, new_start_time)
                 update_mining_fields.append(gpu_field_name)
                 message_text += f'✔ {i}-я видеокарта принесла ${income} дохода\n'

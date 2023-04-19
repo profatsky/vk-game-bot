@@ -1,4 +1,7 @@
-from database.models import UserModel
+from vkbottle_types.codegen.objects import UsersUserFull
+
+from config import bot
+from .models import UserModel
 
 
 async def is_user_exists(vk_id: int) -> bool:
@@ -23,3 +26,12 @@ async def get_free_gpu_slot(vk_id: int) -> str | None:
         return 'gpu_2'
     elif not user.gpu_3:
         return 'gpu_3'
+
+
+async def get_user_name(vk_id: int) -> str:
+    user_info = await get_user_info(vk_id)
+    return f"{user_info.first_name} {user_info.last_name}"
+
+
+async def get_user_info(vk_id: int) -> UsersUserFull:
+    return (await bot.api.users.get(user_ids=[vk_id]))[0]

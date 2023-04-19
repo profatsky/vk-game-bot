@@ -1,5 +1,17 @@
 from vkbottle import Keyboard, Text, KeyboardButtonColor
 
+
+games_menu_keyboard = (
+    Keyboard(one_time=True, inline=False)
+        .add(Text('👋 Цуефа', payload={'games': 'tsuefa'}), color=KeyboardButtonColor.PRIMARY)
+        .add(Text('🃏 Blackjack', payload={'games': 'blackjack'}), color=KeyboardButtonColor.PRIMARY)
+        .add(Text('🦅 Монетка', payload={'games': 'coinflip'}), color=KeyboardButtonColor.PRIMARY)
+        .row()
+        .add(Text('◀ В главное меню', payload={'menu': 'back'}))
+        .get_json()
+)
+
+
 blackjack_action_keyboard = (
     Keyboard(one_time=True)
     .add(Text('➕ Еще', payload={'blackjack': 'take_more'}), color=KeyboardButtonColor.POSITIVE)

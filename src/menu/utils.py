@@ -1,11 +1,7 @@
 from vkbottle import Keyboard, Text
 
 
-def generate_shop_keyboard(
-        numbers: list[int],
-        prev_page: bool,
-        next_page: bool
-) -> Keyboard:
+def generate_shop_keyboard(numbers: list[int], prev_page: bool, next_page: bool) -> Keyboard:
     keyboard = generate_choice_keyboard_with_numbers(numbers).row()
     prev_page_button = Text('◀ Пред.стр', payload={'choice': 'prev_page'})
     next_page_button = Text('▶ След.стр', payload={'choice': 'next_page'})
@@ -22,12 +18,6 @@ def generate_shop_keyboard(
         keyboard.add(next_page_button)
     else:
         keyboard.add(back_to_shop_button)
-    return keyboard
-
-
-def generate_sell_gpu_keyboard(numbers: list[int]) -> Keyboard:
-    keyboard = generate_choice_keyboard_with_numbers(numbers).row()
-    keyboard.add(Text('◀ Назад', payload={'choice': 'back'}))
     return keyboard
 
 
