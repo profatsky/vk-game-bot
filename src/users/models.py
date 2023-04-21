@@ -16,14 +16,15 @@ class UserModel(Model):
     vk_id = fields.IntField(unique=True)
     balance = fields.IntField(default=1500)
     nickname = fields.CharField(max_length=16)
-    skin = fields.ForeignKeyField('models.SkinModel')
-    face = fields.ForeignKeyField('models.FaceModel')
-    haircut = fields.ForeignKeyField('models.HaircutModel')
-    clothes = fields.ForeignKeyField('models.ClothesModel', null=True)
-    gpu_1 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
-    gpu_2 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
-    gpu_3 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True)
+    skin = fields.ForeignKeyField('models.SkinModel', on_delete='RESTRICT')
+    face = fields.ForeignKeyField('models.FaceModel', on_delete='RESTRICT')
+    haircut = fields.ForeignKeyField('models.HaircutModel', on_delete='RESTRICT')
+    clothes = fields.ForeignKeyField('models.ClothesModel', null=True, on_delete='RESTRICT')
+    gpu_1 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True, on_delete='RESTRICT')
+    gpu_2 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True, on_delete='RESTRICT')
+    gpu_3 = fields.ForeignKeyField('models.GraphicsCardModel', related_name=False, null=True, on_delete='RESTRICT')
     status = fields.CharField(max_length=24, choiсes=statuses, default='Пользователь')
+    background_color = fields.ForeignKeyField('models.BackgroundColorModel', on_delete='RESTRICT')
 
     class Meta:
         table = 'users'
@@ -50,8 +51,16 @@ class UserModel(Model):
             nickname=self.nickname,
             character=character,
             graphics_cards=graphics_cards,
-            status=self.status
+            status=self.status,
+            background_color=(await self.background_color).hex
         )
+
+
+class BackgroundColorModel(Model):
+    hex = fields.CharField(max_length=6)
+
+    class Meta:
+        table = 'background_color'
 
 
 class AbstractItemModel(Model):

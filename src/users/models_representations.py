@@ -29,3 +29,4 @@ class User:
     character: Character
     graphics_cards: list[GraphicsCard]
     status: str
+    background_color: str

@@ -50,7 +50,8 @@ async def show_skin_shop_page(message: Message, page_number: int = 1):
     keyboard = generate_shop_keyboard(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
-        next_page=(len(skins) == 4)
+        next_page=(len(skins) == 4),
+        back_label='◀🏬 В магазин'
     )
 
     await message.answer(
@@ -77,7 +78,7 @@ async def change_skin(message: Message):
         )
 
     choice = json.loads(message.payload)['choice']
-    if choice == 'back_to_shop':
+    if choice == 'back':
         await bot.state_dispenser.delete(message.from_id)
         await show_character_shop_menu(message)
     elif choice == 'prev_page':
@@ -125,7 +126,8 @@ async def show_face_shop_page(message: Message, page_number: int = 1):
     keyboard = generate_shop_keyboard(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
-        next_page=(len(faces) == 4)
+        next_page=(len(faces) == 4),
+        back_label='◀🏬 В магазин'
     )
 
     await message.answer(
@@ -152,7 +154,7 @@ async def change_face(message: Message):
         )
 
     choice = json.loads(message.payload)['choice']
-    if choice == 'back_to_shop':
+    if choice == 'back':
         await bot.state_dispenser.delete(message.from_id)
         await show_character_shop_menu(message)
     elif choice == 'prev_page':
@@ -200,7 +202,8 @@ async def show_haircut_shop_page(message: Message, page_number: int = 1):
     keyboard = generate_shop_keyboard(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
-        next_page=(len(haircuts) == 4)
+        next_page=(len(haircuts) == 4),
+        back_label='◀🏬 В магазин'
     )
 
     await message.answer(
@@ -227,7 +230,7 @@ async def change_haircut(message: Message):
         )
 
     choice = json.loads(message.payload)['choice']
-    if choice == 'back_to_shop':
+    if choice == 'back':
         await bot.state_dispenser.delete(message.from_id)
         await show_character_shop_menu(message)
     elif choice == 'prev_page':
@@ -275,7 +278,8 @@ async def show_clothes_shop_page(message: Message, page_number: int = 1):
     keyboard = generate_shop_keyboard(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
-        next_page=(len(clothes) == 4)
+        next_page=(len(clothes) == 4),
+        back_label='◀🏬 В магазин'
     )
 
     await message.answer(
@@ -305,7 +309,7 @@ async def change_clothes(message: Message):
         )
 
     choice = json.loads(message.payload)['choice']
-    if choice == 'back_to_shop':
+    if choice == 'back':
         await bot.state_dispenser.delete(message.from_id)
         await show_character_shop_menu(message)
     elif choice == 'prev_page':

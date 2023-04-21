@@ -1,11 +1,11 @@
 from vkbottle import Keyboard, Text
 
 
-def generate_shop_keyboard(numbers: list[int], prev_page: bool, next_page: bool) -> Keyboard:
+def generate_shop_keyboard(numbers: list[int], prev_page: bool, next_page: bool, back_label: str) -> Keyboard:
     keyboard = generate_choice_keyboard_with_numbers(numbers).row()
     prev_page_button = Text('◀ Пред.стр', payload={'choice': 'prev_page'})
     next_page_button = Text('▶ След.стр', payload={'choice': 'next_page'})
-    back_to_shop_button = Text('◀🏬 В магазин', payload={'choice': 'back_to_shop'})
+    back_to_shop_button = Text(back_label, payload={'choice': 'back'})
     if prev_page and next_page:
         keyboard.add(prev_page_button)
         keyboard.add(next_page_button).row()

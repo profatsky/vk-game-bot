@@ -152,7 +152,8 @@ async def choose_nickname(message: Message, nickname: str):
         nickname=nickname,
         skin_id=state_payload['skin_pk'],
         face_id=state_payload['face_pk'],
-        haircut_id=state_payload['haircut_pk']
+        haircut_id=state_payload['haircut_pk'],
+        background_color_id=1
     )
     await bot.state_dispenser.delete(message.from_id)
     await message.answer('🥳 Вы успешно зарегистрировались!')

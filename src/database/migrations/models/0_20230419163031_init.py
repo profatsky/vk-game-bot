@@ -3,7 +3,11 @@ from tortoise import BaseDBAsyncClient
 
 async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
-        CREATE TABLE IF NOT EXISTS "clothes" (
+        CREATE TABLE IF NOT EXISTS "background_color" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "hex" VARCHAR(6) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "clothes" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "price" INT NOT NULL  DEFAULT 0,
     "image_path" VARCHAR(256) NOT NULL
@@ -35,13 +39,14 @@ CREATE TABLE IF NOT EXISTS "users" (
     "balance" INT NOT NULL  DEFAULT 1500,
     "nickname" VARCHAR(16) NOT NULL,
     "status" VARCHAR(24) NOT NULL  DEFAULT 'Пользователь',
-    "clothes_id" INT REFERENCES "clothes" ("id") ON DELETE CASCADE,
-    "face_id" INT NOT NULL REFERENCES "faces" ("id") ON DELETE CASCADE,
-    "gpu_1_id" INT REFERENCES "gpu" ("id") ON DELETE CASCADE,
-    "gpu_2_id" INT REFERENCES "gpu" ("id") ON DELETE CASCADE,
-    "gpu_3_id" INT REFERENCES "gpu" ("id") ON DELETE CASCADE,
-    "haircut_id" INT NOT NULL REFERENCES "haircuts" ("id") ON DELETE CASCADE,
-    "skin_id" INT NOT NULL REFERENCES "skins" ("id") ON DELETE CASCADE
+    "background_color_id" INT NOT NULL REFERENCES "background_color" ("id") ON DELETE RESTRICT,
+    "clothes_id" INT REFERENCES "clothes" ("id") ON DELETE RESTRICT,
+    "face_id" INT NOT NULL REFERENCES "faces" ("id") ON DELETE RESTRICT,
+    "gpu_1_id" INT REFERENCES "gpu" ("id") ON DELETE RESTRICT,
+    "gpu_2_id" INT REFERENCES "gpu" ("id") ON DELETE RESTRICT,
+    "gpu_3_id" INT REFERENCES "gpu" ("id") ON DELETE RESTRICT,
+    "haircut_id" INT NOT NULL REFERENCES "haircuts" ("id") ON DELETE RESTRICT,
+    "skin_id" INT NOT NULL REFERENCES "skins" ("id") ON DELETE RESTRICT
 );
 CREATE TABLE IF NOT EXISTS "mining" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -69,6 +74,7 @@ INSERT INTO `faces` (`price`, `image_path`) VALUES
 (1500, 'faces/face4.png'), (3000, 'faces/face5.png'), (5000, 'faces/face6.png');
 INSERT INTO `gpu` (`price`, `image_path`, `income`) VALUES 
 (1500, 'gpu/low_card.png', 25), (7500, 'gpu/medium_card.png', 80), (25000, 'gpu/high_card.png', 250);
+INSERT INTO `background_color` (`hex`) VALUES ('FFC700'), ('4189F6'), ('16AB25'), ('FA7A71');
 """
 
 

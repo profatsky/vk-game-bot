@@ -7,7 +7,7 @@ from users.models_representations import User, Character
 
 
 def create_profile_image(user: User, vk_user_name: str) -> Image:
-    background_image = Image.new('RGB', (600, 300), color='#FFC700')
+    background_image = Image.new('RGB', (600, 300), color=f'#{user.background_color}')
     draw_context = ImageDraw.Draw(background_image)
     font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=35)
 
