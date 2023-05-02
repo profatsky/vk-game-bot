@@ -3,10 +3,10 @@ from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
 from config import bot
-from images.gen import create_choice_image, convert_image_to_bytes_io
-from images.utils import upload_image
+from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.keyboards import main_menu_keyboard
+from .images import create_choice_image
 from .utils import is_user_exists
 from .keyboards import register_choice_keyboard
 from .models import UserModel, SkinModel, FaceModel, HaircutModel

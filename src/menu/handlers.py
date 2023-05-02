@@ -5,8 +5,8 @@ from vkbottle.modules import json
 
 from config import bot
 from games.keyboards import games_menu_keyboard
-from images.gen import create_profile_image, convert_image_to_bytes_io
-from images.utils import upload_image
+from images import convert_image_to_bytes_io, upload_image
+from users.images import create_profile_image
 from users.models import UserModel, BackgroundColorModel
 from users.utils import get_user_name
 from .images import create_color_choice_image

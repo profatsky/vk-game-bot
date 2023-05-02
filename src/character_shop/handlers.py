@@ -5,11 +5,11 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
+from character_shop.images import create_shop_image
 from character_shop.keyboards import character_shop_keyboard
 from character_shop.states import CharacterShopState
 from config import bot
-from images.gen import create_shop_image, convert_image_to_bytes_io
-from images.utils import upload_image
+from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.utils import generate_shop_keyboard
 from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel

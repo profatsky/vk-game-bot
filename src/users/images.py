@@ -1,9 +1,32 @@
-from io import BytesIO
 from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
+from images import open_image
 from users.models_representations import User, Character
+
+
+def create_character_image(
+        skin_image_path: str,
+        face_image_path: Optional[str] = None,
+        haircut_image_path: Optional[str] = None,
+        clothes_image_path: Optional[str] = None
+) -> Image:
+    contour_image = open_image('contour.png')
+    skin_image = open_image(skin_image_path)
+    skin_image.paste(contour_image, (0, 0), contour_image)
+    if face_image_path:
+        face_image = open_image(face_image_path)
+        skin_image.paste(face_image, (0, 0), face_image)
+    if haircut_image_path:
+        haircut_image = open_image(haircut_image_path)
+        skin_image.paste(haircut_image, (0, 0), haircut_image)
+    if clothes_image_path:
+        clothes_image = open_image(clothes_image_path)
+        skin_image.paste(clothes_image, (0, 0), clothes_image)
+
+    skin_image = skin_image.resize((181, 181), Image.ANTIALIAS)
+    return skin_image
 
 
 def create_profile_image(user: User, vk_user_name: str) -> Image:
@@ -42,31 +65,6 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
     )
     background_image.paste(character_image, (404, 119), character_image)
     return background_image
-
-
-def create_shop_image(characters: list[Character], choice_numbers: list[int], prices: list[int]) -> Image:
-    choice_image = create_choice_image(characters, choice_numbers)
-    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=40)
-    draw_context = ImageDraw.Draw(choice_image)
-    draw_context.text(
-        (81 - 12 * len(str(prices[0])), 79),
-        f'${prices[0]:,}'.replace(',', '.'),
-        font=font,
-        fill='black'
-    )
-    draw_context.text(
-        (288 - 12 * len(str(prices[1])), 79),
-        f'${prices[1]:,}'.replace(',', '.'),
-        font=font,
-        fill='black'
-    )
-    draw_context.text(
-        (497 - 12 * len(str(prices[2])), 79),
-        f'${prices[2]:,}'.replace(',', '.'),
-        font=font,
-        fill='black'
-    )
-    return choice_image
 
 
 def create_choice_image(characters: list[Character], choice_numbers: list[int]) -> Image:
@@ -113,38 +111,3 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
         )
         x_coordinate += 208
     return background_image
-
-
-def create_character_image(
-        skin_image_path: str,
-        face_image_path: Optional[str] = None,
-        haircut_image_path: Optional[str] = None,
-        clothes_image_path: Optional[str] = None
-) -> Image:
-    contour_image = open_image('contour.png')
-    skin_image = open_image(skin_image_path)
-    skin_image.paste(contour_image, (0, 0), contour_image)
-    if face_image_path:
-        face_image = open_image(face_image_path)
-        skin_image.paste(face_image, (0, 0), face_image)
-    if haircut_image_path:
-        haircut_image = open_image(haircut_image_path)
-        skin_image.paste(haircut_image, (0, 0), haircut_image)
-    if clothes_image_path:
-        clothes_image = open_image(clothes_image_path)
-        skin_image.paste(clothes_image, (0, 0), clothes_image)
-
-    skin_image = skin_image.resize((181, 181), Image.ANTIALIAS)
-    return skin_image
-
-
-def open_image(image_path: str):
-    return Image.open(f'assets/img/{image_path}')
-
-
-def convert_image_to_bytes_io(img: Image, image_path: str = 'img') -> BytesIO:
-    bio = BytesIO()
-    bio.name = image_path
-    img.save(bio, 'png')
-    bio.seek(0)
-    return bio
