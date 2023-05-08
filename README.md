@@ -1,12 +1,14 @@
 # vk-game-bot
-## Описание
 
-Игровой чат-бот в ВКонтакте
+## Описание
+Игровой чат-бот в ВКонтакте, написанный на Python, с функционалом регистрации, кастомизации персонажа и заработком внутриигровой валюты.
+
+## Технологии
 * [VKBottle](https://github.com/vkbottle/vkbottle)
 * [Pillow для генерации изображений](https://github.com/python-pillow/Pillow)
 * [Tortoise ORM](https://github.com/tortoise/tortoise-orm)
 * [Aerich для миграций](https://github.com/tortoise/aerich)
-* База данных SQLite
+* SQLite
 
 ## Основной функционал:
 * Регистрация и создание персонажа
@@ -50,7 +52,7 @@ TOKEN = токен сообщества ВК
 > python bot.py
 ```
 
-### Возникли вопросы?
+## Возникли вопросы?
 ВКонтакте: https://vk.com/profatsky
 
 Telegram: @profatsky
