@@ -21,13 +21,17 @@ shop_menu_keyboard = (
 
 income_menu_keyboard = (
     Keyboard()
-        .add(Text('🔆 Ежедневный бонус', payload={'income_menu': 'bonus'}), color=KeyboardButtonColor.PRIMARY)
-        .add(Text('🔨 Работа', payload={'income_menu': 'work'}), color=KeyboardButtonColor.PRIMARY)
-        .add(Text('🖥 Майнинг', payload={'income_menu': 'mining'}), color=KeyboardButtonColor.PRIMARY)
-        .row()
-        .add(Text('◀ В главное меню', payload={'menu': 'back'}))
+    .add(Text('🔆 Ежедневный бонус', payload={'income_menu': 'bonus'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('🔨 Работа', payload={'income_menu': 'work'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('🖥 Майнинг', payload={'income_menu': 'mining'}), color=KeyboardButtonColor.PRIMARY)
+    .row()
+    .add(Text('◀ В главное меню', payload={'menu': 'back'}))
 )
 
+back_to_menu_keyboard = (
+    Keyboard()
+    .add(Text('◀ В главное меню', payload={'menu': 'back'}))
+)
 
 settings_menu_keyboard = (
     Keyboard()
@@ -36,7 +40,6 @@ settings_menu_keyboard = (
     .row()
     .add(Text('◀ В главное меню', payload={'menu': 'back'}))
 )
-
 
 back_to_settings_keyboard = (
     Keyboard()

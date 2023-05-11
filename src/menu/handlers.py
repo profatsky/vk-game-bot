@@ -11,8 +11,9 @@ from users.models import UserModel, BackgroundColorModel
 from users.utils import get_user_name
 from .images import create_color_choice_image
 from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard, settings_menu_keyboard, \
-    back_to_settings_keyboard
-from .states import SettingsState
+    back_to_settings_keyboard, back_to_menu_keyboard
+from .models import QuestionModel
+from .states import SupportState, SettingsState
 from .utils import generate_shop_keyboard
 
 bl = BotLabeler()
@@ -72,7 +73,32 @@ async def show_income_menu(message: Message):
 
 @bl.private_message(payload={'menu': 'games'})
 async def games(message: Message):
-    await message.answer(f'Список игр', keyboard=games_menu_keyboard)
+    await message.answer('🕹 Список игр', keyboard=games_menu_keyboard)
+
+
+@bl.private_message(payload={'menu': 'help'})
+async def contact_support(message: Message):
+    await message.answer('✏ Напишите свой вопрос', keyboard=back_to_menu_keyboard)
+    await bot.state_dispenser.set(message.peer_id, SupportState.QUESTION)
+
+
+@bl.private_message(state=SupportState.QUESTION, text='<text>')
+async def submit_question(message: Message, text=None):
+    if text == '◀ В главное меню':
+        await back_to_menu(message)
+    elif len(text) > 512:
+        await message.answer(
+            '❗ Длина вопроса не должна превышать 512 символов!',
+            keyboard=back_to_menu_keyboard
+        )
+    else:
+        user = await UserModel.get(vk_id=message.from_id)
+        await QuestionModel.create(text=text, from_user=user)
+        await message.answer(
+            '⌚ Ваш вопрос отправлен в тех.поддержку. Ожидайте ответа!',
+            keyboard=back_to_menu_keyboard
+        )
+        await bot.state_dispenser.delete(message.peer_id)
 
 
 @bl.private_message(payload={'menu': 'settings'})
