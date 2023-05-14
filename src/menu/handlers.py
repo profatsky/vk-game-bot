@@ -14,21 +14,21 @@ from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keybo
     back_to_settings_keyboard, back_to_menu_keyboard
 from .models import QuestionModel
 from .states import SupportState, SettingsState
-from .utils import generate_shop_keyboard
+from .utils import generate_shop_keyboard, get_main_menu_keyboard
 
 bl = BotLabeler()
 
 
 @bl.private_message(payload={"menu": "back"})
 async def back_to_menu(message: Message):
-    await message.answer("🎈 Главное меню", keyboard=main_menu_keyboard)
+    await message.answer("🎈 Главное меню", keyboard=get_main_menu_keyboard(message.from_id))
 
 
 @bl.private_message(payload={'menu': 'profile'})
 async def show_profile(
         message: Message,
         text='👤 Ваш профиль',
-        keyboard=main_menu_keyboard
+        keyboard=None
 ):
     user = await UserModel.get(vk_id=message.from_id)
     user = await user.convert_to_dataclass()
@@ -38,6 +38,10 @@ async def show_profile(
         vk_user_name=vk_user_name
     )
     image = await upload_image(convert_image_to_bytes_io(image))
+
+    if keyboard is None:
+        keyboard = get_main_menu_keyboard(message.from_id)
+
     await message.answer(
         message=text,
         attachment=image,

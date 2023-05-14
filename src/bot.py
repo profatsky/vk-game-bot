@@ -1,6 +1,7 @@
 from tortoise import Tortoise
 
-from config import bot
+from admin.utils import save_admin_list
+from config import bot, MODELS
 from handlers import labelers
 
 
@@ -11,9 +12,10 @@ for custom_labeler in labelers:
 async def startup_task():
     await Tortoise.init(
         db_url='sqlite://database/db.sqlite3?journal_mode=delete',
-        modules={'models': ['users.models', 'mining.models', 'income.models', 'menu.models']}
+        modules={'models': MODELS}
     )
     print('База данных подключена')
+    await save_admin_list()
 
 
 async def shutdown_task():

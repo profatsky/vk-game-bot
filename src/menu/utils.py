@@ -1,5 +1,14 @@
 from vkbottle import Keyboard, Text
 
+from config import admin_list
+from menu.keyboards import admin_main_menu_keyboard, main_menu_keyboard
+
+
+def get_main_menu_keyboard(vk_id: int) -> Keyboard:
+    if vk_id in admin_list.storage:
+        return admin_main_menu_keyboard
+    return main_menu_keyboard
+
 
 def generate_shop_keyboard(numbers: list[int], prev_page: bool, next_page: bool, back_label: str) -> Keyboard:
     keyboard = generate_choice_keyboard_with_numbers(numbers).row()

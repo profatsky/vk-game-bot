@@ -11,6 +11,20 @@ main_menu_keyboard = (
     .add(Text('🏬 Магазин', payload={'menu': 'shop'}), color=KeyboardButtonColor.PRIMARY)
 )
 
+admin_main_menu_keyboard = (
+    Keyboard()
+    .add(Text('📄 Профиль', payload={'menu': 'profile'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('☎ Поддержка', payload={'menu': 'help'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('⚙ Настройки', payload={'menu': 'settings'}), color=KeyboardButtonColor.PRIMARY)
+    .row()
+    .add(Text('🎮 Игры', payload={'menu': 'games'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('⛏ Заработок', payload={'menu': 'income'}), color=KeyboardButtonColor.PRIMARY)
+    .add(Text('🏬 Магазин', payload={'menu': 'shop'}), color=KeyboardButtonColor.PRIMARY)
+    .row()
+    .add(Text('🎫 Админ панель', payload={'menu': 'admin'}), color=KeyboardButtonColor.PRIMARY)
+)
+
+
 shop_menu_keyboard = (
     Keyboard()
     .add(Text('✏ Кастомизация персонажа', payload={'shop_menu': 'character'}), color=KeyboardButtonColor.PRIMARY)

@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS "questions" (
     "created_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "answer" VARCHAR(1024),
     "answered_at" TIMESTAMP,
-    "answered_by_id" INT  UNIQUE REFERENCES "users" ("id") ON DELETE RESTRICT,
-    "from_user_id" INT NOT NULL UNIQUE REFERENCES "users" ("id") ON DELETE RESTRICT
+    "answered_by_id" INT REFERENCES "users" ("id") ON DELETE RESTRICT,
+    "from_user_id" INT NOT NULL REFERENCES "users" ("id") ON DELETE RESTRICT
 );
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

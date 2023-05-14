@@ -6,6 +6,7 @@ from config import bot
 from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.keyboards import main_menu_keyboard
+from menu.utils import get_main_menu_keyboard
 from .images import create_choice_image
 from .utils import is_user_exists
 from .keyboards import register_choice_keyboard
@@ -21,7 +22,7 @@ async def start(message: Message):
     if await is_user_exists(message.from_id):
         await message.answer(
             '😕 Я вас не понимаю',
-            keyboard=main_menu_keyboard
+            keyboard=get_main_menu_keyboard(message.from_id)
         )
     else:
         image = await upload_image('assets/img/start.png')
