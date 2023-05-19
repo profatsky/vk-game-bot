@@ -10,27 +10,32 @@ def get_main_menu_keyboard(vk_id: int) -> Keyboard:
     return main_menu_keyboard
 
 
-def generate_shop_keyboard(numbers: list[int], prev_page: bool, next_page: bool, back_label: str) -> Keyboard:
-    keyboard = generate_choice_keyboard_with_numbers(numbers).row()
+def generate_choice_keyboard_with_pagination(
+        numbers: list[int],
+        prev_page: bool,
+        next_page: bool,
+        back_label: str
+) -> Keyboard:
+    keyboard = generate_choice_keyboard(numbers).row()
     prev_page_button = Text('◀ Пред.стр', payload={'choice': 'prev_page'})
     next_page_button = Text('▶ След.стр', payload={'choice': 'next_page'})
-    back_to_shop_button = Text(back_label, payload={'choice': 'back'})
+    back_button = Text(back_label, payload={'choice': 'back'})
     if prev_page and next_page:
         keyboard.add(prev_page_button)
         keyboard.add(next_page_button).row()
-        keyboard.add(back_to_shop_button)
+        keyboard.add(back_button)
     elif prev_page:
-        keyboard.add(back_to_shop_button)
+        keyboard.add(back_button)
         keyboard.add(prev_page_button)
     elif next_page:
-        keyboard.add(back_to_shop_button)
+        keyboard.add(back_button)
         keyboard.add(next_page_button)
     else:
-        keyboard.add(back_to_shop_button)
+        keyboard.add(back_button)
     return keyboard
 
 
-def generate_choice_keyboard_with_numbers(numbers: list[int]) -> Keyboard:
+def generate_choice_keyboard(numbers: list[int]) -> Keyboard:
     emoji = {
         '0': '0️⃣',
         '1': '1️⃣',

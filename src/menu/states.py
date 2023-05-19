@@ -1,7 +1,7 @@
 from vkbottle import BaseStateGroup
 
 
-class SupportState(BaseStateGroup):
+class ContactSupportState(BaseStateGroup):
     QUESTION = 0
 
 

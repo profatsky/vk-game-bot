@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS "questions" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "text" VARCHAR(512) NOT NULL,
     "created_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-    "answer" VARCHAR(1024),
+    "answer" VARCHAR(512),
     "answered_at" TIMESTAMP,
     "answered_by_id" INT REFERENCES "users" ("id") ON DELETE RESTRICT,
     "from_user_id" INT NOT NULL REFERENCES "users" ("id") ON DELETE RESTRICT

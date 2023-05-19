@@ -11,7 +11,7 @@ from character_shop.states import CharacterShopState
 from config import bot
 from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
-from menu.utils import generate_shop_keyboard
+from menu.utils import generate_choice_keyboard_with_pagination
 from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel
 from users.utils import is_enough_money
 
@@ -47,7 +47,7 @@ async def show_skin_shop_page(message: Message, page_number: int = 1):
     image = create_shop_image(characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
-    keyboard = generate_shop_keyboard(
+    keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
         next_page=(len(skins) == 4),
@@ -123,7 +123,7 @@ async def show_face_shop_page(message: Message, page_number: int = 1):
     image = create_shop_image(characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
-    keyboard = generate_shop_keyboard(
+    keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
         next_page=(len(faces) == 4),
@@ -199,7 +199,7 @@ async def show_haircut_shop_page(message: Message, page_number: int = 1):
     image = create_shop_image(characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
-    keyboard = generate_shop_keyboard(
+    keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
         next_page=(len(haircuts) == 4),
@@ -275,7 +275,7 @@ async def show_clothes_shop_page(message: Message, page_number: int = 1):
     image = create_shop_image(characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
-    keyboard = generate_shop_keyboard(
+    keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
         next_page=(len(clothes) == 4),

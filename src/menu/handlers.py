@@ -13,8 +13,8 @@ from .images import create_color_choice_image
 from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard, settings_menu_keyboard, \
     back_to_settings_keyboard, back_to_menu_keyboard
 from .models import QuestionModel
-from .states import SupportState, SettingsState
-from .utils import generate_shop_keyboard, get_main_menu_keyboard
+from .states import ContactSupportState, SettingsState
+from .utils import generate_choice_keyboard_with_pagination, get_main_menu_keyboard
 
 bl = BotLabeler()
 
@@ -83,10 +83,10 @@ async def games(message: Message):
 @bl.private_message(payload={'menu': 'help'})
 async def contact_support(message: Message):
     await message.answer('✏ Напишите свой вопрос', keyboard=back_to_menu_keyboard)
-    await bot.state_dispenser.set(message.peer_id, SupportState.QUESTION)
+    await bot.state_dispenser.set(message.peer_id, ContactSupportState.QUESTION)
 
 
-@bl.private_message(state=SupportState.QUESTION, text='<text>')
+@bl.private_message(state=ContactSupportState.QUESTION, text='<text>')
 async def submit_question(message: Message, text=None):
     if text == '◀ В главное меню':
         await back_to_menu(message)
@@ -141,7 +141,7 @@ async def show_change_background_page(message: Message, page_number: int = 1):
 
     choice_numbers = [color.pk for color in colors[:3]]
 
-    keyboard = generate_shop_keyboard(
+    keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
         prev_page=(page_number > 1),
         next_page=(len(colors) == 4),
