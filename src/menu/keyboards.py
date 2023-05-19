@@ -44,7 +44,7 @@ income_menu_keyboard = (
 
 back_to_menu_keyboard = (
     Keyboard()
-    .add(Text('◀ В главное меню', payload={'menu': 'back'}))
+    .add(Text('◀ В главное меню'))
 )
 
 settings_menu_keyboard = (

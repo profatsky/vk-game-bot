@@ -19,7 +19,7 @@ from .utils import generate_choice_keyboard_with_pagination, get_main_menu_keybo
 bl = BotLabeler()
 
 
-@bl.private_message(payload={"menu": "back"})
+@bl.private_message(payload={'menu': 'back'})
 async def back_to_menu(message: Message):
     await message.answer("🎈 Главное меню", keyboard=get_main_menu_keyboard(message.from_id))
 
@@ -89,6 +89,7 @@ async def contact_support(message: Message):
 @bl.private_message(state=ContactSupportState.QUESTION, text='<text>')
 async def submit_question(message: Message, text=None):
     if text == '◀ В главное меню':
+        await bot.state_dispenser.delete(message.peer_id)
         await back_to_menu(message)
     elif len(text) > 512:
         await message.answer(
@@ -99,8 +100,8 @@ async def submit_question(message: Message, text=None):
         user = await UserModel.get(vk_id=message.from_id)
         await QuestionModel.create(text=text, from_user=user)
         await message.answer(
-            '⌚ Ваш вопрос отправлен в тех.поддержку. Ожидайте ответа!',
-            keyboard=back_to_menu_keyboard
+            '💬 Ваш вопрос успешно отправлен!',
+            keyboard=get_main_menu_keyboard(message.from_id)
         )
         await bot.state_dispenser.delete(message.peer_id)
 
