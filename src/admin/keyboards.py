@@ -22,3 +22,8 @@ back_to_support_menu_keyboard = (
     Keyboard()
     .add(Text('◀ В меню тех.поддержки', payload={'admin': 'support'}))
 )
+
+back_to_questions_list = (
+    Keyboard()
+    .add(Text('◀ Назад', payload={'choice': 'current_page'}))
+)
