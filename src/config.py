@@ -5,7 +5,8 @@ from vkbottle import Bot, CtxStorage
 from vkbottle.framework.labeler import BotLabeler
 
 load_dotenv()
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv('TOKEN')
+ADMIN_ID = os.getenv('ADMIN_ID')
 
 labeler = BotLabeler()
 bot = Bot(
@@ -19,7 +20,7 @@ MODELS = [
     'users.models',
     'mining.models',
     'income.models',
-    'menu.models',
+    'admin.models',
     'aerich.models'
 ]
 

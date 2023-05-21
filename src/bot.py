@@ -1,6 +1,6 @@
 from tortoise import Tortoise
 
-from admin.utils import save_admin_list
+from admin.utils import save_admin_list, appoint_superuser
 from config import bot, MODELS
 from handlers import labelers
 
@@ -15,6 +15,7 @@ async def startup_task():
         modules={'models': MODELS}
     )
     print('База данных подключена')
+    await appoint_superuser()
     await save_admin_list()
 
 
