@@ -5,9 +5,9 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
 from config import admin_list, bot
-from menu.models import QuestionModel
 from menu.utils import generate_choice_keyboard_with_pagination
 from users.models import UserModel
+from .models import QuestionModel
 from .keyboards import admin_menu_keyboard, support_menu_keyboard, back_to_support_menu_keyboard, back_to_questions_list
 from .states import UnansweredQuestionsState, AnsweredQuestionsState
 
