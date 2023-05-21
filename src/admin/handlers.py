@@ -215,3 +215,14 @@ async def choose_question_to_get_info(message: Message):
             '❗ Чтобы вернуться назад воспользуйтесь кнопкой',
             keyboard=back_to_questions_list
         )
+
+
+@bl.private_message(payload={'support': 'answered_by_me'})
+async def show_questions_answered_by_me(message: Message):
+    questions = await QuestionModel.filter(
+        answer__isnull=False,
+        answered_by=await UserModel.get(
+            vk_id=message.from_id
+        )
+    )
+    await show_answered_questions(message, questions)
