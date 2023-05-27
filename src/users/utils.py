@@ -28,9 +28,14 @@ async def get_free_gpu_slot(vk_id: int) -> str | None:
         return 'gpu_3'
 
 
+async def get_clickable_user_name(vk_id: int) -> str:
+    user_info = await get_user_info(vk_id)
+    return f'[id{user_info.id}|{user_info.first_name} {user_info.last_name}]'
+
+
 async def get_user_name(vk_id: int) -> str:
     user_info = await get_user_info(vk_id)
-    return f"{user_info.first_name} {user_info.last_name}"
+    return f'{user_info.first_name} {user_info.last_name}'
 
 
 async def get_user_info(vk_id: int) -> UsersUserFull:
