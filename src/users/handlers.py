@@ -2,7 +2,7 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot
+from config import bot, ADMIN_ID, admin_list
 from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.keyboards import main_menu_keyboard
@@ -148,7 +148,7 @@ async def choose_nickname(message: Message, nickname: str):
     if len(nickname) > 16:
         return await message.answer('❗ Длина имени не может превышать 16 символов')
     state_payload = message.state_peer.payload
-    await UserModel.create(
+    user = await UserModel.create(
         vk_id=message.from_id,
         nickname=nickname,
         skin_id=state_payload['skin_pk'],
@@ -156,6 +156,12 @@ async def choose_nickname(message: Message, nickname: str):
         haircut_id=state_payload['haircut_pk'],
         background_color_id=1
     )
+
+    if message.from_id == int(ADMIN_ID):
+        user.status = 'Основатель'
+        await user.save(update_fields=['status'])
+        admin_list.set(user.vk_id, user.status)
+
     await bot.state_dispenser.delete(message.from_id)
     await message.answer('🥳 Вы успешно зарегистрировались!')
     await show_profile(message)

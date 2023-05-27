@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS "questions" (
     "created_at" TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "answer" VARCHAR(512),
     "answered_at" TIMESTAMP,
-    "answered_by_id" INT REFERENCES "users" ("id") ON DELETE RESTRICT,
-    "from_user_id" INT NOT NULL REFERENCES "users" ("id") ON DELETE RESTRICT
+    "answered_by_id" INT REFERENCES "users" ("id") ON DELETE SET NULL,
+    "from_user_id" INT REFERENCES "users" ("id") ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -76,18 +76,18 @@ CREATE TABLE IF NOT EXISTS "aerich" (
     "app" VARCHAR(100) NOT NULL,
     "content" JSON NOT NULL
 );
-INSERT INTO `skins` (`price`, `image_path`) VALUES 
+INSERT INTO `skins` (`price`, `image_path`) VALUES
 (500, 'skins/skin1.png'), (500, 'skins/skin2.png'), (500, 'skins/skin3.png');
-INSERT INTO `clothes` (`price`, `image_path`) VALUES 
+INSERT INTO `clothes` (`price`, `image_path`) VALUES
 (1500, 'clothes/clothes1.png'), (1500, 'clothes/clothes2.png'), (1500, 'clothes/clothes3.png');
-INSERT INTO `haircuts` (`price`, `image_path`) VALUES 
+INSERT INTO `haircuts` (`price`, `image_path`) VALUES
 (500, 'haircuts/haircut1.png'), (500, 'haircuts/haircut2.png'), (500, 'haircuts/haircut3.png'),
 (1500, 'haircuts/haircut4.png'), (3000, 'haircuts/haircut5.png'), (5000, 'haircuts/haircut6.png'),
 (10000, 'haircuts/haircut7.png'), (15000, 'haircuts/haircut8.png'), (30000, 'haircuts/haircut9.png');
-INSERT INTO `faces` (`price`, `image_path`) VALUES 
+INSERT INTO `faces` (`price`, `image_path`) VALUES
 (500, 'faces/face1.png'), (500, 'faces/face2.png'), (500, 'faces/face3.png'),
 (1500, 'faces/face4.png'), (3000, 'faces/face5.png'), (5000, 'faces/face6.png');
-INSERT INTO `gpu` (`price`, `image_path`, `income`) VALUES 
+INSERT INTO `gpu` (`price`, `image_path`, `income`) VALUES
 (1500, 'gpu/low_card.png', 25), (7500, 'gpu/medium_card.png', 80), (25000, 'gpu/high_card.png', 250);
 INSERT INTO `background_color` (`hex`) VALUES ('FFC700'), ('4189F6'), ('16AB25'), ('FA7A71');
 """
