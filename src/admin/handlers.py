@@ -232,3 +232,16 @@ async def show_questions_answered_by_me(message: Message):
         )
     )
     await show_answered_questions(message, questions)
+
+
+@bl.private_message(payload={'admin': 'stats'})
+async def show_admin_stats(message: Message):
+    user = await UserModel.get(vk_id=message.from_id)
+    questions = await QuestionModel.filter(answered_by=user.pk).count()
+    status_emoji = {'Хелпер': '🦺', 'Администратор': '👔', 'Гл.Администратор': '🎩', 'Основатель': '👑'}
+    await message.answer(
+        f'📉 Статистика {await get_clickable_user_name(message.from_id)}\n\n'
+        f'{status_emoji[user.status]} Админ-статус: {user.status}\n'
+        f'☎ Кол-во ответов на обращения: {questions}\n',
+        keyboard=admin_menu_keyboard
+    )
