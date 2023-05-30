@@ -1,16 +1,27 @@
 import json
+import random
 from datetime import datetime
 
+from tortoise.exceptions import DoesNotExist
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
 from config import admin_list, bot
-from menu.utils import generate_choice_keyboard_with_pagination
+from menu.utils import generate_choice_keyboard_with_pagination, get_main_menu_keyboard
+from users.handlers import start
 from users.models import UserModel
 from users.utils import get_clickable_user_name
 from .models import QuestionModel
 from .keyboards import admin_menu_keyboard, support_menu_keyboard, back_to_support_menu_keyboard, back_to_questions_list
 from .states import UnansweredQuestionsState, AnsweredQuestionsState
+
+USER_STATUSES = {
+    'Пользователь': {'lvl': 1, 'emoji': '👤'},
+    'Хелпер': {'lvl': 2, 'emoji': '🦺'},
+    'Администратор': {'lvl': 3, 'emoji': '👔'},
+    'Гл.Администратор': {'lvl': 4, 'emoji': '🎩'},
+    'Основатель': {'lvl': 5, 'emoji': '👑'}
+}
 
 bl = BotLabeler()
 
@@ -23,9 +34,8 @@ async def open_admin_menu(message: Message):
 @bl.private_message(payload={'admin': 'admin_list'})
 async def show_admin_list(message: Message):
     text = '📑 Список администраторов\n\n'
-    status_emoji = {'Хелпер': '🦺', 'Администратор': '👔', 'Гл.Администратор': '🎩', 'Основатель': '👑'}
     for vk_id, status in admin_list.storage.items():
-        text += f'{status_emoji[status]} {status} - {await get_clickable_user_name(vk_id)}\n'
+        text += f'{USER_STATUSES[status]["emoji"]} {status} - {await get_clickable_user_name(vk_id)}\n'
     await message.answer(text, keyboard=admin_menu_keyboard)
 
 
@@ -131,7 +141,7 @@ async def answer_question(message: Message, text=None):
 
         await bot.api.messages.send(
             user_id=(await question.from_user).vk_id,
-            random_id=0,
+            random_id=random.randint(1, 2 ** 32),
             message='✨ Пришел ответ от тех.поддержки на ваш вопрос!\n\n'
                     f'💬 Текст ответа: {text}\n👔 Отправитель: {await get_clickable_user_name(message.from_id)}'
         )
@@ -238,10 +248,68 @@ async def show_questions_answered_by_me(message: Message):
 async def show_admin_stats(message: Message):
     user = await UserModel.get(vk_id=message.from_id)
     questions = await QuestionModel.filter(answered_by=user.pk).count()
-    status_emoji = {'Хелпер': '🦺', 'Администратор': '👔', 'Гл.Администратор': '🎩', 'Основатель': '👑'}
     await message.answer(
         f'📉 Статистика {await get_clickable_user_name(message.from_id)}\n\n'
-        f'{status_emoji[user.status]} Админ-статус: {user.status}\n'
+        f'{USER_STATUSES[user.status]["emoji"]} Админ-статус: {user.status}\n'
         f'☎ Кол-во ответов на обращения: {questions}\n',
         keyboard=admin_menu_keyboard
+    )
+
+
+@bl.private_message(text='/set <vk_id> <lvl>')
+async def set_user_status(message: Message, vk_id: str = None, lvl: str = None):
+    appointing_admin = await UserModel.get(vk_id=message.from_id)
+    appointing_admin_lvl = USER_STATUSES[appointing_admin.status]['lvl']
+
+    if appointing_admin.status == 'Пользователь':
+        return await start(message)
+
+    if not vk_id.isdigit() or not lvl.isdigit() or '0' in (vk_id, lvl):
+        return await message.answer(
+            '❗ Некорректный ввод! ID пользователя и уровень должны быть положительными числами!',
+            keyboard=admin_menu_keyboard
+        )
+    vk_id, lvl = int(vk_id), int(lvl)
+
+    if vk_id == message.from_id:
+        return await message.answer(
+            '❗ Некорректный ввод! Вы не можете изменить свой статус!',
+            keyboard=admin_menu_keyboard
+        )
+
+    try:
+        appointee = await UserModel.get(vk_id=vk_id)
+    except DoesNotExist:
+        return await message.answer('❗ Указанный пользователь не зарегистрирован!')
+    appointee_lvl = USER_STATUSES[appointee.status]['lvl']
+
+    if appointee_lvl >= appointing_admin_lvl or appointing_admin_lvl <= lvl:
+        return await message.answer('❗ У вас недостаточно прав!', keyboard=admin_menu_keyboard)
+
+    if appointee_lvl == lvl:
+        return await message.answer(
+            '❗ Пользователь уже имеет указанный статус!',
+            keyboard=admin_menu_keyboard
+        )
+
+    appointee.status = [k for k, v in USER_STATUSES.items() if v['lvl'] == lvl][0]
+    await appointee.save(update_fields=['status'])
+
+    if lvl > 1:
+        admin_list.set(vk_id, appointee.status)
+    else:
+        admin_list.delete(vk_id)
+
+    await message.answer(
+        f'✔ Вы изменили статус пользователя {await get_clickable_user_name(vk_id)} на «{appointee.status}»!',
+        keyboard=admin_menu_keyboard
+    )
+
+    emoji = '⏫' if appointee_lvl < lvl else '⏬'
+    await bot.api.messages.send(
+        user_id=vk_id,
+        random_id=random.randint(1, 2 ** 32),
+        message=f'{emoji} {appointing_admin.status} {await get_clickable_user_name(message.from_id)} '
+                f'изменил ваш статус на «{appointee.status}»!',
+        keyboard=get_main_menu_keyboard(vk_id)
     )

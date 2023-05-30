@@ -5,7 +5,6 @@ from vkbottle.modules import json
 from config import bot, ADMIN_ID, admin_list
 from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
-from menu.keyboards import main_menu_keyboard
 from menu.utils import get_main_menu_keyboard
 from .images import create_choice_image
 from .utils import is_user_exists
