@@ -3,6 +3,7 @@ import random
 from datetime import datetime
 
 from tortoise.exceptions import DoesNotExist
+from vkbottle import Keyboard
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
@@ -336,7 +337,7 @@ async def give_money_to_user(message: Message, vk_id: str = None, money: str = N
     if admin.status not in ('Гл.Администратор', 'Основатель'):
         return await message.answer(
             '❗ У вас недостаточно прав! Данной командой может воспользоваться только '
-            'пользователь со статусом «Гл.Администратор» или «Основатель» ',
+            'пользователь со статусом «Гл.Администратор» или «Основатель»!',
             keyboard=admin_menu_keyboard
         )
 
@@ -354,3 +355,87 @@ async def give_money_to_user(message: Message, vk_id: str = None, money: str = N
         message=f'💸 {admin.status} {await get_clickable_user_name(message.from_id)} '
                 f'пополнил ваш баланс на ${money}!'
     )
+
+
+@bl.private_message(text='/setmoney <vk_id> <money>')
+async def set_money_for_user(message: Message, vk_id: str = None, money: str = None):
+    admin = await UserModel.get(vk_id=message.from_id)
+
+    if admin.status == 'Пользователь':
+        return await start(message)
+
+    if not vk_id.isdigit() or not money.isdigit() or '0' in (vk_id, money):
+        return await message.answer(
+            '❗ Некорректный ввод! ID пользователя и сумма должны быть положительными числами!',
+            keyboard=admin_menu_keyboard
+        )
+    vk_id, money = int(vk_id), int(money)
+
+    try:
+        recipient = await UserModel.get(vk_id=vk_id)
+    except DoesNotExist:
+        return await message.answer('❗ Указанный пользователь не зарегистрирован!')
+
+    if admin.status not in ('Гл.Администратор', 'Основатель'):
+        return await message.answer(
+            '❗ У вас недостаточно прав! Данной командой может воспользоваться только '
+            'пользователь со статусом «Гл.Администратор» или «Основатель»!',
+            keyboard=admin_menu_keyboard
+        )
+
+    recipient.balance = money
+    await recipient.save(update_fields=['balance'])
+
+    await message.answer(
+        f'✔ Баланс пользователя {await get_clickable_user_name(recipient.vk_id)} успешно изменен на ${money}!',
+        keyboard=admin_menu_keyboard
+    )
+
+    await bot.api.messages.send(
+        user_id=vk_id,
+        random_id=random.randint(1, 2 ** 32),
+        message=f'💵 {admin.status} {await get_clickable_user_name(message.from_id)} '
+                f'изменил ваш баланс на ${money}!'
+    )
+
+
+@bl.private_message(text='/del <vk_id>')
+async def del_user_account(message: Message, vk_id: str = None):
+    admin = await UserModel.get(vk_id=message.from_id)
+
+    if admin.status == 'Пользователь':
+        return await start(message)
+
+    if not vk_id.isdigit():
+        return await message.answer(
+            '❗ Некорректный введен ID пользователя!',
+            keyboard=admin_menu_keyboard
+        )
+    vk_id = int(vk_id)
+
+    try:
+        user = await UserModel.get(vk_id=vk_id)
+    except DoesNotExist:
+        return await message.answer('❗ Указанный пользователь не зарегистрирован!')
+
+    if admin.status not in ('Гл.Администратор', 'Основатель'):
+        return await message.answer(
+            '❗ У вас недостаточно прав! Данной командой может воспользоваться только '
+            'пользователь со статусом «Гл.Администратор» или «Основатель»!',
+            keyboard=admin_menu_keyboard
+        )
+
+    await user.delete()
+
+    await message.answer(
+        f'✔ Аккаунт пользователя {await get_clickable_user_name(user.vk_id)} удалён!',
+        keyboard=admin_menu_keyboard
+    )
+
+    await bot.api.messages.send(
+        user_id=vk_id,
+        random_id=random.randint(1, 2 ** 32),
+        message=f'❗❌ {admin.status} {await get_clickable_user_name(message.from_id)} удалил ваш аккаунт!',
+        keyboard=Keyboard()
+    )
+    
