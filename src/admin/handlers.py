@@ -7,22 +7,14 @@ from vkbottle import Keyboard
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
-from config import admin_list, bot
-from menu.utils import generate_choice_keyboard_with_pagination, get_main_menu_keyboard
+from config import admin_list, bot, ADMIN_GRADES, USER_STATUSES
+from menu.utils import generate_choice_keyboard_with_pagination
 from users.handlers import start
 from users.models import UserModel
 from users.utils import get_clickable_user_name
 from .models import QuestionModel
 from .keyboards import admin_menu_keyboard, support_menu_keyboard, back_to_support_menu_keyboard, back_to_questions_list
 from .states import UnansweredQuestionsState, AnsweredQuestionsState
-
-USER_STATUSES = {
-    'Пользователь': {'lvl': 1, 'emoji': '👤'},
-    'Хелпер': {'lvl': 2, 'emoji': '🦺'},
-    'Администратор': {'lvl': 3, 'emoji': '👔'},
-    'Гл.Администратор': {'lvl': 4, 'emoji': '🎩'},
-    'Основатель': {'lvl': 5, 'emoji': '👑'}
-}
 
 bl = BotLabeler()
 
@@ -36,7 +28,7 @@ async def open_admin_menu(message: Message):
 async def show_admin_list(message: Message):
     text = '📑 Список администраторов\n\n'
     for vk_id, status in admin_list.storage.items():
-        text += f'{USER_STATUSES[status]["emoji"]} {status} - {await get_clickable_user_name(vk_id)}\n'
+        text += f'{ADMIN_GRADES[status]["emoji"]} {status} - {await get_clickable_user_name(vk_id)}\n'
     await message.answer(text, keyboard=admin_menu_keyboard)
 
 
@@ -251,19 +243,36 @@ async def show_admin_stats(message: Message):
     questions = await QuestionModel.filter(answered_by=user.pk).count()
     await message.answer(
         f'📉 Статистика {await get_clickable_user_name(message.from_id)}\n\n'
-        f'{USER_STATUSES[user.status]["emoji"]} Админ-статус: {user.status}\n'
+        f'{ADMIN_GRADES[user.status]["emoji"]} Админ-статус: {user.status}\n'
         f'☎ Кол-во ответов на обращения: {questions}\n',
         keyboard=admin_menu_keyboard
     )
 
 
-@bl.private_message(text='/set <vk_id> <lvl>')
+@bl.private_message(payload={'admin': 'commands'})
+async def show_admin_commands_list(message: Message):
+    admin = await UserModel.get(vk_id=message.from_id)
+    admin_lvl = ADMIN_GRADES[admin.status]['lvl']
+
+    text = ''
+    for grade in ADMIN_GRADES.values():
+        if grade['lvl'] <= admin_lvl:
+            for command in grade['commands']:
+                text += f'\n{command}'
+
+    await message.answer(
+        f'🛠 Список доступных команд\n{text}' if text else '😕 Для вас нет доступных команд',
+        keyboard=admin_menu_keyboard
+    )
+
+
+@bl.private_message(text='/setstatus <vk_id> <lvl>')
 async def set_user_status(message: Message, vk_id: str = None, lvl: str = None):
     appointing_admin = await UserModel.get(vk_id=message.from_id)
-    appointing_admin_lvl = USER_STATUSES[appointing_admin.status]['lvl']
-
     if appointing_admin.status == 'Пользователь':
         return await start(message)
+
+    appointing_admin_lvl = ADMIN_GRADES[appointing_admin.status]['lvl']
 
     if not vk_id.isdigit() or not lvl.isdigit() or '0' in (vk_id, lvl):
         return await message.answer(
@@ -282,7 +291,9 @@ async def set_user_status(message: Message, vk_id: str = None, lvl: str = None):
         appointee = await UserModel.get(vk_id=vk_id)
     except DoesNotExist:
         return await message.answer('❗ Указанный пользователь не зарегистрирован!')
-    appointee_lvl = USER_STATUSES[appointee.status]['lvl']
+    appointee_lvl = ADMIN_GRADES.get(appointee.status)
+    if appointee_lvl is None:
+        appointee_lvl = 0
 
     if appointee_lvl >= appointing_admin_lvl or appointing_admin_lvl <= lvl:
         return await message.answer('❗ У вас недостаточно прав!', keyboard=admin_menu_keyboard)
@@ -293,7 +304,7 @@ async def set_user_status(message: Message, vk_id: str = None, lvl: str = None):
             keyboard=admin_menu_keyboard
         )
 
-    appointee.status = [k for k, v in USER_STATUSES.items() if v['lvl'] == lvl][0]
+    appointee.status = USER_STATUSES[lvl]
     await appointee.save(update_fields=['status'])
 
     if lvl > 1:
@@ -418,10 +429,10 @@ async def del_user_account(message: Message, vk_id: str = None):
     except DoesNotExist:
         return await message.answer('❗ Указанный пользователь не зарегистрирован!')
 
-    if admin.status not in ('Гл.Администратор', 'Основатель'):
+    if admin.status != 'Основатель':
         return await message.answer(
             '❗ У вас недостаточно прав! Данной командой может воспользоваться только '
-            'пользователь со статусом «Гл.Администратор» или «Основатель»!',
+            'пользователь со статусом «Основатель»!',
             keyboard=admin_menu_keyboard
         )
 

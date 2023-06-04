@@ -5,6 +5,7 @@ admin_menu_keyboard = (
     .add(Text('⁉ Обращения', payload={'admin': 'support'}), color=KeyboardButtonColor.PRIMARY)
     .add(Text('📃 Список администраторов', payload={'admin': 'admin_list'}), color=KeyboardButtonColor.PRIMARY)
     .row()
+    .add(Text('🔧 Доступные команды', payload={'admin': 'commands'}), color=KeyboardButtonColor.PRIMARY)
     .add(Text('🎖 Моя статистика', payload={'admin': 'stats'}), color=KeyboardButtonColor.PRIMARY)
     .row()
     .add(Text('◀ В главное меню', payload={'menu': 'back'}))
