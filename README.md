@@ -22,18 +22,20 @@
 * Игры (блэкджек, камень-ножницы-бумага, монетка)
 ![game](src/assets/gif/game.gif)
 
-## Настройка виртуального окружения и установка зависимостей
+
+## Инструкция по настройке и запуску
+### Настройка виртуального окружения и установка зависимостей
 ```
-> python -m venv venv
+$ python -m venv venv
 
-> venv\Scripts\activate.bat - для Windows
+$ venv\Scripts\activate.bat - для Windows
 
-> source venv/bin/activate - для Linux и MacOS
+$ source venv/bin/activate - для Linux и MacOS
 
-> python -m pip install -r requirements.txt
+$ python -m pip install -r requirements.txt
 ```
 
-## Конфиг
+### Конфиг
 Переименуйте файл .env.example в .env и укажите в нем токен вашего сообщества и ID вашего профиля ВК
 ```
 TOKEN = токен сообщества ВК
@@ -41,16 +43,16 @@ TOKEN = токен сообщества ВК
 ADMIN_ID = ID администратора
 ```
 
-## Применение миграций
+### Применение миграций
 ```
-> aerich upgrade
+$ aerich upgrade
 ```
 
-## Запуск
+### Запуск
 ```
-> cd src
+$ cd src
 
-> python bot.py
+$ python bot.py
 ```
 
 ## Возникли вопросы?
