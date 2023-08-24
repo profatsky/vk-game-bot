@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from vkbottle import Keyboard, Text
 
 from config import admin_list
@@ -11,7 +13,7 @@ def get_main_menu_keyboard(vk_id: int) -> Keyboard:
 
 
 def generate_choice_keyboard_with_pagination(
-        numbers: list[int],
+        numbers: Iterable[int],
         prev_page: bool,
         next_page: bool,
         back_label: str
@@ -35,7 +37,7 @@ def generate_choice_keyboard_with_pagination(
     return keyboard
 
 
-def generate_choice_keyboard(numbers: list[int]) -> Keyboard:
+def generate_choice_keyboard(numbers: Iterable[int]) -> Keyboard:
     emoji = {
         '0': '0️⃣',
         '1': '1️⃣',

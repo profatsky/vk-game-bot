@@ -28,7 +28,7 @@ class UserModel(Model):
     class Meta:
         table = 'users'
 
-    async def convert_to_dataclass(self):
+    async def convert_to_dataclass(self) -> User:
         clothes = await self.clothes
         if clothes:
             clothes = clothes.convert_to_dataclass()
@@ -69,7 +69,7 @@ class AbstractItemModel(Model):
     class Meta:
         abstract = True
 
-    def convert_to_dataclass(self):
+    def convert_to_dataclass(self) -> Item:
         return Item(
             pk=self.pk,
             price=self.price,
@@ -103,7 +103,7 @@ class GraphicsCardModel(AbstractItemModel):
     class Meta:
         table = 'gpu'
 
-    def convert_to_dataclass(self):
+    def convert_to_dataclass(self) -> GraphicsCard:
         return GraphicsCard(
             pk=self.pk,
             price=self.price,

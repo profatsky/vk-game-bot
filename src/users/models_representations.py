@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 
@@ -27,6 +28,6 @@ class User:
     balance: int
     nickname: str
     character: Character
-    graphics_cards: list[GraphicsCard]
+    graphics_cards: Iterable[GraphicsCard]
     status: str
     background_color: str

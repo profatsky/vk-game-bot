@@ -1,4 +1,5 @@
-from typing import Optional
+import itertools
+from collections.abc import Iterable
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -8,9 +9,9 @@ from users.models_representations import User, Character
 
 def create_character_image(
         skin_image_path: str,
-        face_image_path: Optional[str] = None,
-        haircut_image_path: Optional[str] = None,
-        clothes_image_path: Optional[str] = None
+        face_image_path: str | None = None,
+        haircut_image_path: str | None = None,
+        clothes_image_path: str | None = None
 ) -> Image:
     contour_image = open_image('contour.png')
     skin_image = open_image(skin_image_path)
@@ -67,17 +68,14 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
     return background_image
 
 
-def create_choice_image(characters: list[Character], choice_numbers: list[int]) -> Image:
-    if 1 < len(characters) < 3:
-        raise ValueError('На одном изображении может находиться не менее 1 и не более 3 персонажей')
-    if len(choice_numbers) != len(characters):
-        raise ValueError('Количество номеров для выбора должно быть равно количеству персонажей на изображении')
+def create_choice_image(characters: Iterable[Character], choice_numbers: Iterable[int]) -> Image:
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
     font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=50)
 
     x_coordinate = 0
-    for index, character in enumerate(characters):
+    for row in itertools.zip_longest(characters, choice_numbers):
+        character, num = row[0], row[1]
         face_image_path = haircut_image_path = clothes_image_path = None
         if character.face:
             face_image_path = character.face.image_path
@@ -105,7 +103,7 @@ def create_choice_image(characters: list[Character], choice_numbers: list[int]) 
         )
         draw_context.text(
             (81 + x_coordinate, 20),
-            str(choice_numbers[index]),
+            str(num),
             font=font,
             fill='black'
         )

@@ -1,10 +1,17 @@
+from collections.abc import Iterable, Sequence
+
 from PIL import ImageFont, ImageDraw, Image
 
 from users.images import create_choice_image
 from users.models_representations import Character
 
 
-def create_shop_image(characters: list[Character], choice_numbers: list[int], prices: list[int]) -> Image:
+def create_shop_image(
+        characters: Iterable[Character],
+        choice_numbers: Iterable[int],
+        prices: Sequence[int]
+) -> Image:
+
     choice_image = create_choice_image(characters, choice_numbers)
     font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=40)
     draw_context = ImageDraw.Draw(choice_image)
