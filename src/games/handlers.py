@@ -282,7 +282,6 @@ async def incorrect_message_during_game(message: Message):
 
 
 def get_card(current_cards: list):
-    print(current_cards)
     while True:
         card_num = random.randint(2, 14)
         card_suit = random.randint(1, 4)

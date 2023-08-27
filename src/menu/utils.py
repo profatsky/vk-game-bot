@@ -52,9 +52,6 @@ def generate_choice_keyboard(numbers: Iterable[int]) -> Keyboard:
     }
     keyboard = Keyboard()
     for number in numbers:
-        str_number = str(number)
-        result_number = ''
-        for digit in str_number:
-            result_number += emoji[digit]
+        result_number = ''.join([emoji[digit] for digit in str(number)])
         keyboard.add(Text(result_number, payload={'choice': number}))
     return keyboard
