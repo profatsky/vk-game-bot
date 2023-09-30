@@ -71,7 +71,7 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
 def create_choice_image(characters: Iterable[Character], choice_numbers: Iterable[int]) -> Image:
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=50)
+    font = ImageFont.truetype('assets/fonts/Fifaks10Dev1.ttf', size=50)
 
     x_coordinate = 0
     for row in itertools.zip_longest(characters, choice_numbers):
