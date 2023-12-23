@@ -1,6 +1,6 @@
 from vkbottle_types.codegen.objects import UsersUserFull
 
-from config import bot
+from core.loader import bot
 from .models import UserModel
 
 

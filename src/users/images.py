@@ -3,7 +3,7 @@ from collections.abc import Iterable
 
 from PIL import Image, ImageDraw, ImageFont
 
-from images import open_image
+from core.utils import open_image
 from users.models_representations import User, Character
 
 

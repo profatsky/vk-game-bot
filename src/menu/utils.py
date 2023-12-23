@@ -2,7 +2,7 @@ from collections.abc import Iterable
 
 from vkbottle import Keyboard, Text
 
-from config import admin_list
+from core.loader import admin_list
 from menu.keyboards import admin_main_menu_keyboard, main_menu_keyboard
 
 

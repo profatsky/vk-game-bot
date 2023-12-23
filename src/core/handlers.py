@@ -18,4 +18,14 @@ async def unknown_message(message: Message):
     await start(message)
 
 
-labelers = [users_bl, menu_bl, character_shop_bl, gpu_shop_bl, mining_bl, income_bl, games_bl, admin_bl, bl]
+labelers = [
+    users_bl,
+    menu_bl,
+    character_shop_bl,
+    gpu_shop_bl,
+    mining_bl,
+    income_bl,
+    games_bl,
+    admin_bl,
+    bl
+]

@@ -2,11 +2,11 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot, ADMIN_ID, admin_list
-from images import upload_image, convert_image_to_bytes_io
+from core.loader import bot, admin_list
+from core.settings import ADMIN_ID
+from core.utils import upload_image, convert_image_to_bytes_io, run_func_in_process
 from menu.handlers import show_profile
 from menu.utils import get_main_menu_keyboard
-from utils import run_func_in_process
 from .images import create_choice_image
 from .utils import is_user_exists
 from .keyboards import register_choice_keyboard

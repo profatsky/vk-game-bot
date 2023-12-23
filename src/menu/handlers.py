@@ -3,14 +3,14 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot
+from core.loader import bot
 from games.keyboards import games_menu_keyboard
-from images import convert_image_to_bytes_io, upload_image
+from core.utils import convert_image_to_bytes_io, upload_image
 from users.images import create_profile_image
 from users.models import UserModel, BackgroundColorModel
 from users.utils import get_user_name
 from admin.models import QuestionModel
-from utils import run_func_in_process
+from core.utils import run_func_in_process
 from .images import create_color_choice_image
 from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard, settings_menu_keyboard, \
     back_to_settings_keyboard, back_to_menu_keyboard

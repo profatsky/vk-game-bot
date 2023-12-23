@@ -5,8 +5,8 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot
-from images import upload_image
+from core.loader import bot
+from core.utils import upload_image
 from menu.handlers import show_shop_menu, show_profile
 from mining.keyboards import mining_menu_keyboard
 from mining.models import MiningModel

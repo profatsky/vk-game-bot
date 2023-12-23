@@ -1,9 +1,9 @@
-from loguru import logger
 from tortoise import Tortoise
 
 from admin.utils import save_admin_list, appoint_superuser
-from config import bot, MODELS
-from handlers import labelers
+from core.loader import bot
+from core.settings import MODELS
+from core.handlers import labelers
 
 
 for custom_labeler in labelers:

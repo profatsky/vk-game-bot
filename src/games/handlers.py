@@ -6,7 +6,7 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot
+from core.loader import bot
 from games.keyboards import tsuefa_keyboard, coin_flip_keyboard, games_menu_keyboard, blackjack_action_keyboard, \
     bet_keyboard
 from games.states import TsuefaState, CoinFlipState, BlackJackState

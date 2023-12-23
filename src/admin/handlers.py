@@ -7,7 +7,8 @@ from vkbottle import Keyboard
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 
-from config import admin_list, bot, ADMIN_GRADES, USER_STATUSES
+from core.settings import ADMIN_GRADES, USER_STATUSES
+from core.loader import admin_list, bot
 from menu.utils import generate_choice_keyboard_with_pagination
 from users.handlers import start
 from users.models import UserModel

@@ -5,7 +5,7 @@ from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
-from config import bot
+from core.loader import bot
 from gpu_shop.handlers import open_gpu_shop
 from gpu_shop.states import GPUShopState
 from menu.handlers import show_profile

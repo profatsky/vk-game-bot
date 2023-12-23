@@ -8,13 +8,13 @@ from vkbottle.modules import json
 from character_shop.images import create_shop_image
 from character_shop.keyboards import character_shop_keyboard
 from character_shop.states import CharacterShopState
-from config import bot
-from images import upload_image, convert_image_to_bytes_io
+from core.loader import bot
+from core.utils import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.utils import generate_choice_keyboard_with_pagination
 from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel
 from users.utils import is_enough_money
-from utils import run_func_in_process
+from core.utils import run_func_in_process
 
 bl = BotLabeler()
 

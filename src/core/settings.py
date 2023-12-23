@@ -1,23 +1,10 @@
 import os
-from concurrent.futures import ProcessPoolExecutor
 
 from dotenv import load_dotenv
-from vkbottle import Bot, CtxStorage
-from vkbottle.framework.labeler import BotLabeler
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 ADMIN_ID = os.getenv('ADMIN_ID')
-
-labeler = BotLabeler()
-bot = Bot(
-    token=TOKEN,
-    labeler=labeler
-)
-
-admin_list = CtxStorage()
-
-process_pool = ProcessPoolExecutor()
 
 MODELS = [
     'users.models',
