@@ -52,7 +52,7 @@ $ aerich upgrade
 ```
 $ cd src
 
-$ python bot.py
+$ python main.py
 ```
 
 ## Возникли вопросы?
