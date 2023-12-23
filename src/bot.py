@@ -1,3 +1,4 @@
+from loguru import logger
 from tortoise import Tortoise
 
 from admin.utils import save_admin_list, appoint_superuser
@@ -25,6 +26,7 @@ async def shutdown_task():
 
 
 if __name__ == '__main__':
+    # logger.stop()
     bot.loop_wrapper.on_startup.append(startup_task())
     bot.loop_wrapper.on_shutdown.append(shutdown_task())
     print('Бот запущен!')

@@ -6,6 +6,7 @@ from config import bot, ADMIN_ID, admin_list
 from images import upload_image, convert_image_to_bytes_io
 from menu.handlers import show_profile
 from menu.utils import get_main_menu_keyboard
+from utils import run_func_in_process
 from .images import create_choice_image
 from .utils import is_user_exists
 from .keyboards import register_choice_keyboard
@@ -56,10 +57,7 @@ async def choose_skin_color(message: Message):
             )
         )
 
-    image = create_choice_image(
-        characters=characters,
-        choice_numbers=[1, 2, 3]
-    )
+    image = await run_func_in_process(create_choice_image, characters, [1, 2, 3])
     image = await upload_image(convert_image_to_bytes_io(image))
     await message.answer(
         message='Выберите лицо',
@@ -99,10 +97,7 @@ async def choose_face(message: Message):
             )
         )
 
-    image = create_choice_image(
-        characters=characters,
-        choice_numbers=[1, 2, 3]
-    )
+    image = await run_func_in_process(create_choice_image, characters, [1, 2, 3])
     image = await upload_image(convert_image_to_bytes_io(image))
     await message.answer(
         message='Выберите прическу',

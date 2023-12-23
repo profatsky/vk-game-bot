@@ -10,6 +10,7 @@ from users.images import create_profile_image
 from users.models import UserModel, BackgroundColorModel
 from users.utils import get_user_name
 from admin.models import QuestionModel
+from utils import run_func_in_process
 from .images import create_color_choice_image
 from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard, settings_menu_keyboard, \
     back_to_settings_keyboard, back_to_menu_keyboard
@@ -32,11 +33,10 @@ async def show_profile(
 ):
     user = await UserModel.get(vk_id=message.from_id)
     user = await user.convert_to_dataclass()
+
     vk_user_name = await get_user_name(message.from_id)
-    image = create_profile_image(
-        user=user,
-        vk_user_name=vk_user_name
-    )
+
+    image = await run_func_in_process(create_profile_image, user, vk_user_name)
     image = await upload_image(convert_image_to_bytes_io(image))
 
     if keyboard is None:

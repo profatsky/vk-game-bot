@@ -14,6 +14,7 @@ from menu.handlers import show_profile
 from menu.utils import generate_choice_keyboard_with_pagination
 from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel
 from users.utils import is_enough_money
+from utils import run_func_in_process
 
 bl = BotLabeler()
 
@@ -120,7 +121,7 @@ async def show_face_shop_page(message: Message, page_number: int = 1):
         prices.append(face.price)
         choice_numbers.append(face.pk)
 
-    image = create_shop_image(characters, choice_numbers, prices)
+    image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
@@ -196,7 +197,7 @@ async def show_haircut_shop_page(message: Message, page_number: int = 1):
         prices.append(haircut.price)
         choice_numbers.append(haircut.pk)
 
-    image = create_shop_image(characters, choice_numbers, prices)
+    image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
@@ -272,7 +273,7 @@ async def show_clothes_shop_page(message: Message, page_number: int = 1):
         prices.append(item.price)
         choice_numbers.append(item.pk)
 
-    image = create_shop_image(characters, choice_numbers, prices)
+    image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
     image = await upload_image(convert_image_to_bytes_io(image))
 
     keyboard = generate_choice_keyboard_with_pagination(

@@ -1,4 +1,5 @@
 import os
+from concurrent.futures import ProcessPoolExecutor
 
 from dotenv import load_dotenv
 from vkbottle import Bot, CtxStorage
@@ -15,6 +16,8 @@ bot = Bot(
 )
 
 admin_list = CtxStorage()
+
+process_pool = ProcessPoolExecutor()
 
 MODELS = [
     'users.models',
