@@ -63,9 +63,7 @@ $ aerich upgrade
 
 ### Запуск
 ```
-$ cd src
-
-$ python main.py
+$ python src/main.py
 ```
 
 ## ⭐️ Понравился чат-бот?
