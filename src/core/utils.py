@@ -1,4 +1,5 @@
 import asyncio
+import os
 from collections.abc import Callable
 from io import BytesIO
 from typing import Any
@@ -6,10 +7,12 @@ from typing import Any
 from PIL import Image
 
 from core.loader import process_pool, photo_message_uploader
+from core.settings import IMG_DIR
 
 
 def open_image(image_path: str) -> Image:
-    return Image.open(f'assets/img/{image_path}')
+    full_image_path = os.path.join(IMG_DIR, image_path)
+    return Image.open(full_image_path)
 
 
 def convert_image_to_bytes(img: Image, image_path: str = 'img') -> bytes:

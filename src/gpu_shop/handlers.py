@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from tortoise.expressions import F
@@ -6,6 +7,7 @@ from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
 from core.loader import bot
+from core.settings import IMG_DIR
 from core.utils import upload_image
 from menu.handlers import show_shop_menu, show_profile
 from mining.keyboards import mining_menu_keyboard
@@ -20,7 +22,8 @@ bl = BotLabeler()
 
 @bl.private_message(payload={'shop_menu': 'gpu'})
 async def open_gpu_shop(message: Message):
-    image = await upload_image('assets/img/gpu_shop.png')
+    image_path = os.path.join(IMG_DIR, 'gpu_shop.png')
+    image = await upload_image(image_path)
     await message.answer(
         message='📼 Видеокарты доступные для покупки\n\n❗ '
                 'Каждый пользователь может владеть лишь 3 видеокартами',

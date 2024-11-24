@@ -1,14 +1,19 @@
 from PIL import Image, ImageDraw, ImageFont
 
+from core.settings import MAIN_FONT_PATH
+
 
 def create_color_choice_image(colors: list[str], choice_numbers: list[int]) -> Image:
     if 1 < len(colors) < 3:
         raise ValueError('На одном изображении может находиться не менее 1 и не более 3 цветов')
+
     if len(choice_numbers) != len(colors):
         raise ValueError('Количество номеров для выбора должно быть равно количеству цветов на изображении')
+
     background_image = Image.new('RGB', (600, 300), color='#F5F5F5')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=50)
+
+    font = ImageFont.truetype(MAIN_FONT_PATH, size=50)
 
     x_coordinate = 0
     for index, color in enumerate(colors):

@@ -2,6 +2,7 @@ from collections.abc import Iterable
 
 from PIL import ImageFont, ImageDraw, Image
 
+from core.settings import MAIN_FONT_PATH
 from users.images import create_choice_image
 from users.models_representations import Character
 
@@ -11,9 +12,8 @@ def create_shop_image(
         choice_numbers: Iterable[int],
         prices: Iterable[int]
 ) -> Image:
-
     choice_image = create_choice_image(characters, choice_numbers)
-    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=40)
+    font = ImageFont.truetype(MAIN_FONT_PATH, size=40)
     draw_context = ImageDraw.Draw(choice_image)
 
     x = 81

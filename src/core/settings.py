@@ -2,27 +2,44 @@ import os
 
 from dotenv import load_dotenv
 
+# Env
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 ADMIN_ID = os.getenv('ADMIN_ID')
+
+
+BASE_DIR = os.path.join(os.getcwd(), 'src')
+
+
+# Assets
+ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
+FONTS_DIR = os.path.join(ASSETS_DIR, 'fonts')
+IMG_DIR = os.path.join(ASSETS_DIR, 'img')
+
+MAIN_FONT_PATH = os.path.join(FONTS_DIR, 'Fifaks10DEV1.ttf')
+
+
+# Database
+DB_DIR = os.path.join(BASE_DIR, 'database')
+DSN = f'sqlite://{DB_DIR}/db.sqlite3?journal_mode=delete'
 
 MODELS = [
     'users.models',
     'mining.models',
     'income.models',
     'admin.models',
-    'aerich.models'
+    'aerich.models',
 ]
 
-DATABASE_CONFIG = {
+DB_CONFIG = {
     'connections': {
-        'default': 'sqlite://src/database/db.sqlite3?journal_mode=delete'
+        'default': DSN,
     },
     'apps': {
         'models': {
             'models': MODELS,
             'default_connection': 'default',
-        }
+        },
     },
 }
 

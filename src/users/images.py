@@ -3,6 +3,7 @@ from collections.abc import Iterable
 
 from PIL import Image, ImageDraw, ImageFont
 
+from core.settings import MAIN_FONT_PATH
 from core.utils import open_image
 from users.models_representations import User, Character
 
@@ -33,7 +34,7 @@ def create_character_image(
 def create_profile_image(user: User, vk_user_name: str) -> Image:
     background_image = Image.new('RGB', (600, 300), color=f'#{user.background_color}')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('assets/fonts/Fifaks10DEV1.ttf', size=35)
+    font = ImageFont.truetype(MAIN_FONT_PATH, size=35)
 
     draw_context.text((55, 20), 'Имя:', font=font, fill='black')
     draw_context.text((55, 65), 'Ник:', font=font, fill='black')
@@ -71,7 +72,7 @@ def create_profile_image(user: User, vk_user_name: str) -> Image:
 def create_choice_image(characters: Iterable[Character], choice_numbers: Iterable[int]) -> Image:
     background_image = Image.new('RGB', (600, 300), color='#FFC700')
     draw_context = ImageDraw.Draw(background_image)
-    font = ImageFont.truetype('assets/fonts/Fifaks10Dev1.ttf', size=50)
+    font = ImageFont.truetype(MAIN_FONT_PATH, size=50)
 
     x_coordinate = 0
     for row in itertools.zip_longest(characters, choice_numbers):

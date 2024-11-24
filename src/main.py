@@ -2,7 +2,7 @@ from tortoise import Tortoise
 
 from admin.utils import save_admin_list, appoint_superuser
 from core.loader import bot
-from core.settings import MODELS
+from core.settings import MODELS, DSN
 from core.handlers import labelers
 
 
@@ -12,8 +12,8 @@ for custom_labeler in labelers:
 
 async def startup_task():
     await Tortoise.init(
-        db_url='sqlite://database/db.sqlite3?journal_mode=delete',
-        modules={'models': MODELS}
+        db_url=DSN,
+        modules={'models': MODELS},
     )
     print('База данных подключена')
     await appoint_superuser()

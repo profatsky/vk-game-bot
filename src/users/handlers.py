@@ -1,9 +1,11 @@
+import os
+
 from vkbottle.bot import Message
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
 from core.loader import bot, admin_list
-from core.settings import ADMIN_ID
+from core.settings import ADMIN_ID, IMG_DIR
 from core.utils import upload_image, convert_image_to_bytes, run_func_in_process
 from menu.handlers import show_profile
 from menu.utils import get_main_menu_keyboard
@@ -25,7 +27,8 @@ async def start(message: Message):
             keyboard=get_main_menu_keyboard(message.from_id)
         )
     else:
-        image = await upload_image('assets/img/start.png')
+        image_path = os.path.join(IMG_DIR, 'start.png')
+        image = await upload_image(image_path)
         await message.answer(
             message='Выберите цвет кожи',
             attachment=image,
