@@ -1,4 +1,4 @@
 [tool.aerich]
-tortoise_orm = "core.settings.DATABASE_CONFIG"
+tortoise_orm = "core.settings.DB_CONFIG"
 location = "src/database/migrations"
 src_folder = "./src"
