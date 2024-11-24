@@ -7,8 +7,13 @@ from vkbottle.framework.labeler import BotLabeler
 from vkbottle.modules import json
 
 from core.loader import bot
-from games.keyboards import tsuefa_keyboard, coin_flip_keyboard, games_menu_keyboard, blackjack_action_keyboard, \
-    bet_keyboard
+from games.keyboards import (
+    tsuefa_keyboard,
+    coin_flip_keyboard,
+    games_menu_keyboard,
+    blackjack_action_keyboard,
+    bet_keyboard,
+)
 from games.states import TsuefaState, CoinFlipState, BlackJackState
 from users.models import UserModel
 from users.utils import is_enough_money, get_user_balance

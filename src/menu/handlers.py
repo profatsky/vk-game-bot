@@ -12,8 +12,14 @@ from users.utils import get_user_name
 from admin.models import QuestionModel
 from core.utils import run_func_in_process
 from .images import create_color_choice_image
-from .keyboards import main_menu_keyboard, shop_menu_keyboard, income_menu_keyboard, settings_menu_keyboard, \
-    back_to_settings_keyboard, back_to_menu_keyboard
+from .keyboards import (
+    main_menu_keyboard,
+    shop_menu_keyboard,
+    income_menu_keyboard,
+    settings_menu_keyboard,
+    back_to_settings_keyboard,
+    back_to_menu_keyboard,
+)
 from .states import ContactSupportState, SettingsState
 from .utils import generate_choice_keyboard_with_pagination, get_main_menu_keyboard
 

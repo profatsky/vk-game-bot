@@ -14,7 +14,12 @@ from users.handlers import start
 from users.models import UserModel
 from users.utils import get_clickable_user_name
 from .models import QuestionModel
-from .keyboards import admin_menu_keyboard, support_menu_keyboard, back_to_support_menu_keyboard, back_to_questions_list
+from .keyboards import (
+    admin_menu_keyboard,
+    support_menu_keyboard,
+    back_to_support_menu_keyboard,
+    back_to_questions_list,
+)
 from .states import UnansweredQuestionsState, AnsweredQuestionsState
 
 bl = BotLabeler()
