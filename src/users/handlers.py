@@ -4,7 +4,7 @@ from vkbottle.modules import json
 
 from core.loader import bot, admin_list
 from core.settings import ADMIN_ID
-from core.utils import upload_image, convert_image_to_bytes_io, run_func_in_process
+from core.utils import upload_image, convert_image_to_bytes, run_func_in_process
 from menu.handlers import show_profile
 from menu.utils import get_main_menu_keyboard
 from .images import create_choice_image
@@ -58,7 +58,7 @@ async def choose_skin_color(message: Message):
         )
 
     image = await run_func_in_process(create_choice_image, characters, [1, 2, 3])
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
     await message.answer(
         message='Выберите лицо',
         attachment=image,
@@ -98,7 +98,7 @@ async def choose_face(message: Message):
         )
 
     image = await run_func_in_process(create_choice_image, characters, [1, 2, 3])
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
     await message.answer(
         message='Выберите прическу',
         attachment=image,

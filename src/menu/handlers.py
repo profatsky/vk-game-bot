@@ -5,7 +5,7 @@ from vkbottle.modules import json
 
 from core.loader import bot
 from games.keyboards import games_menu_keyboard
-from core.utils import convert_image_to_bytes_io, upload_image
+from core.utils import convert_image_to_bytes, upload_image
 from users.images import create_profile_image
 from users.models import UserModel, BackgroundColorModel
 from users.utils import get_user_name
@@ -37,7 +37,7 @@ async def show_profile(
     vk_user_name = await get_user_name(message.from_id)
 
     image = await run_func_in_process(create_profile_image, user, vk_user_name)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     if keyboard is None:
         keyboard = get_main_menu_keyboard(message.from_id)
@@ -152,7 +152,7 @@ async def show_change_background_page(message: Message, page_number: int = 1):
     image = create_color_choice_image(
         colors=[color.hex for color in colors[:3]],
         choice_numbers=choice_numbers)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     await message.answer(
         '🎨 Выберите новый цвет фона' if page_number == 1 else '',

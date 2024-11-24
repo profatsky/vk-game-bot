@@ -9,7 +9,7 @@ from character_shop.images import create_shop_image
 from character_shop.keyboards import character_shop_keyboard
 from character_shop.states import CharacterShopState
 from core.loader import bot
-from core.utils import upload_image, convert_image_to_bytes_io
+from core.utils import upload_image, convert_image_to_bytes
 from menu.handlers import show_profile
 from menu.utils import generate_choice_keyboard_with_pagination
 from users.models import UserModel, ClothesModel, FaceModel, SkinModel, HaircutModel
@@ -46,7 +46,7 @@ async def show_skin_shop_page(message: Message, page_number: int = 1):
         choice_numbers.append(skin.pk)
 
     image = create_shop_image(characters, choice_numbers, prices)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
@@ -122,7 +122,7 @@ async def show_face_shop_page(message: Message, page_number: int = 1):
         choice_numbers.append(face.pk)
 
     image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
@@ -198,7 +198,7 @@ async def show_haircut_shop_page(message: Message, page_number: int = 1):
         choice_numbers.append(haircut.pk)
 
     image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
@@ -274,7 +274,7 @@ async def show_clothes_shop_page(message: Message, page_number: int = 1):
         choice_numbers.append(item.pk)
 
     image = await run_func_in_process(create_shop_image, characters, choice_numbers, prices)
-    image = await upload_image(convert_image_to_bytes_io(image))
+    image = await upload_image(convert_image_to_bytes(image))
 
     keyboard = generate_choice_keyboard_with_pagination(
         numbers=choice_numbers,
