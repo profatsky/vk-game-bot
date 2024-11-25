@@ -16,7 +16,7 @@ ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
 FONTS_DIR = os.path.join(ASSETS_DIR, 'fonts')
 IMG_DIR = os.path.join(ASSETS_DIR, 'img')
 
-MAIN_FONT_PATH = os.path.join(FONTS_DIR, 'Fifaks10DEV1.ttf')
+MAIN_FONT_PATH = os.path.join(FONTS_DIR, 'Fifaks10Dev1.ttf')
 
 
 # Database
